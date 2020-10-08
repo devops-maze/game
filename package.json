@@ -1,0 +1,19 @@
+{
+  "name": "game",
+  "version": "1.0.0",
+  "description": "A simple maze game with firebase and node.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devops-maze/game.git"
+  },
+  "author": "Jakab Ádám | Hankóczi Döme | Jankelic Iván",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/devops-maze/game/issues"
+  },
+  "homepage": "https://github.com/devops-maze/game#readme"
+}
