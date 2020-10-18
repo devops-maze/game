@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", (event) => {
+/* document.addEventListener("DOMContentLoaded", (event) => {
   const app = firebase.app();
   console.log(app);
 
@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
         document.write(`${data.name} at $${data.price} <br>`);
       });
     });
-
+*/
   /* Second instant refresh
 
   const myPost = db.collection("posts").doc("firstpost");
@@ -35,23 +35,46 @@ document.addEventListener("DOMContentLoaded", (event) => {
     const data = doc.data();
     document.write(data.title + `<br>`);
     document.write(data.createdAt);
-  });*/
-});
+  });
+});*/
 
-/* Google Login
+
+/* Google Login */
+
+/*firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    // User is signed in.
+
+    document.getElementById("user_div").style.display = "block";
+    document.getElementById("login_div").style.display = "none";
+
+
+  } else {
+    // No user is signed in.
+
+    document.getElementById("user_div").style.display = "none";
+    document.getElementById("login_div").style.display = "block";
+
+  }
+});
+*/
 
 function googleLogin() {
-  const provider = new firebase.auth.GoogleAuthProvider();
-
-  firebase
-    .auth()
-    .signInWithPopup(provider)
-    .then((result) => {
-      const user = result.user;
-      document.write(`Hello ${user.displayName}`);
+  var provider = new firebase.auth.GoogleAuthProvider();
+  firebase.auth().signInWithPopup(provider).then((result) => {
+      var user = result.user;
+      document.writeln(`Hello ${user.displayName}`);
+      document.writeln(`Highscore: ${user.displayHighscore}`);
       console.log(user);
     })
     .catch(console.log);
+}
+
+/*function googleLogout(){
+  firebase.auth().signOut().then(function() {
+  }).catch(function(error) {
+    console.log(error);
+  });
 }*/
 
 /* Second instant refresh
