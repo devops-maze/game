@@ -1,0 +1,36 @@
+* {
+  font-family: "Nunito", sans-serif;
+  font-size: 16px;
+}
+
+body {
+  background-color: cadetblue;
+}
+
+nav {
+  /* position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); */
+  background-color: aquamarine;
+  padding: 2em;
+}
+
+nav h1 {
+  margin-right: 1em;
+}
+
+#login-btn {
+  padding: 0 2em;
+  font-weight: 700;
+  font-size: 20px;
+}
+
+#controls button {
+  margin: 1rem;
+}
+
+.row {
+  margin-right: 0;
+  margin-left: 0;
+}
