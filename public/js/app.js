@@ -1,13 +1,13 @@
-document.addEventListener("DOMContentLoaded", (event) => {
-  const app = firebase.app();
+// document.addEventListener("DOMContentLoaded", (event) => {
+//   const app = firebase.app();
 
+//   function showimage() {
+//     const storage = firebase.storage();
+//     const storageRef = storage.ref();
+//     var spaceRef = storageRef.child("images/deno.png");
+//   }
+// });
 
-  function showimage() {
-    const storage = firebase.storage();
-    const storageRef = storage.ref();
-    var spaceRef = storageRef.child('images/deno.png');
-  }
-});
 /*  document.addEventListener("DOMContentLoaded", (event) => {
   const app = firebase.app();
   console.log(app);
@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
       });
     });
 */
-  /* Second instant refresh
+/* Second instant refresh
 
   const myPost = db.collection("posts").doc("firstpost");
 
@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     document.querySelector("#title").innerHTML = data.title;
   });*/
 
-  /* DB call with instant refresh
+/* DB call with instant refresh
 
   const db = firebase.firestore();
 
