@@ -15,5 +15,6 @@
   "bugs": {
     "url": "https://github.com/devops-maze/game/issues"
   },
-  "homepage": "https://github.com/devops-maze/game#readme"
+  "homepage": "https://github.com/devops-maze/game#readme",
+  "dependencies": {}
 }
