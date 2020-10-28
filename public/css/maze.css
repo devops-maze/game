@@ -1,0 +1,54 @@
+#maze-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80vh;
+  height: 80vh;
+  padding: 15px;
+  background-color: rgba(67, 70, 67, 0.3);
+  border-radius: 1em;
+}
+
+@media only screen and (max-width: 768px) {
+  #maze-container {
+    width: 95vw;
+    height: 95vw;
+  }
+}
+
+#maze-canvas {
+  width: 100%;
+  height: 100%;
+}
+
+table {
+  width: 100%;
+  height: 100%;
+  border: 2px rgba(47, 50, 47, 0.7) solid;
+}
+
+table td {
+  width: 10%;
+  height: 10%;
+}
+
+table td:not(:last-child) {
+  border-right: 2px rgba(47, 50, 47, 0.7) solid;
+}
+
+table .gap {
+  background-color: blue;
+  border-right: 0px;
+}
+
+.finish {
+  background-color: lightgreen;
+}
+
+.start {
+  background-color: darkred;
+}
+
+.cell {
+}
+
