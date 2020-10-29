@@ -1,45 +1,46 @@
 window.addEventListener("DOMContentLoaded", (event) => {
-  createBlankMaze();
+  createNewMaze(10, 10);
 });
-let mazeWidth = 10;
-let mazeHeight = 10;
 
-function createBlankMaze() {
+function createNewMaze(mazeWidth, mazeHeight) {
   removeMaze();
-  var rowIndex, colIndex;
 
-  var table = document.createElement("table");
-  var tbody = document.createElement("tbody");
+  let div = () => document.createElement("div");
+  const mazeCanvas = document.getElementById("maze-canvas");
 
-  for (rowIndex = 1; rowIndex <= mazeHeight; rowIndex++) {
-    var row = document.createElement("tr");
+  const maze = div();
+  maze.setAttribute("id", "maze");
 
-    for (colIndex = 1; colIndex <= mazeWidth; colIndex++) {
-      var col = document.createElement("td");
+  for (let rowIndex = 1; rowIndex <= mazeHeight; rowIndex++) {
+    let row = div();
+    row.classList.add("maze-row");
 
-      if (rowIndex == 1 && colIndex == 1) {
-        col.className = "start";
-        col.setAttribute("type", "start");
-      } else if (rowIndex == mazeHeight && colIndex == mazeWidth) {
-        col.className = "finish";
-        col.setAttribute("type", "finish");
-      } else {
-        col.className = "cell";
+    for (let colIndex = 1; colIndex <= mazeWidth; colIndex++) {
+      let column = div();
+      column.classList.add("maze-column");
+      let cell = div();
+
+      if (rowIndex === 1 && colIndex === 1) {
+        cell.classList.add("start");
+        cell.setAttribute("type", "start");
+        let character = div();
+        character.setAttribute("id", "character");
+        cell.appendChild(character);
+      } else if (rowIndex === mazeHeight && colIndex === mazeWidth) {
+        cell.classList.add("finish");
+        cell.setAttribute("type", "finish");
       }
-      col.setAttribute("id", "cell_" + rowIndex + "_" + colIndex);
+      cell.classList.add("maze-cell");
+      cell.setAttribute("id", `cell_${rowIndex}_${colIndex}`);
 
-      row.appendChild(col);
+      column.appendChild(cell);
+      row.appendChild(column);
     }
-
-    tbody.appendChild(row);
+    maze.appendChild(row);
   }
+  mazeCanvas.appendChild(maze);
 
-  table.appendChild(tbody);
-
-  let mazeCanvas = document.getElementById("maze-canvas");
-  mazeCanvas.appendChild(table);
-  mazeCanvas.firstElementChild.setAttribute("id", "maze");
-  createGaps();
+  createGaps(mazeWidth, mazeHeight);
 }
 
 function removeMaze() {
@@ -50,16 +51,14 @@ function removeMaze() {
   }
 }
 
-function createGaps() {
+function createGaps(mazeWidth, mazeHeight) {
   for (let colIndex = 1; colIndex <= mazeWidth - 1; colIndex++) {
     let randomGap = Math.floor(Math.random() * 9) + 1;
     for (let rowIndex = 1; rowIndex <= mazeHeight; rowIndex++) {
       if (randomGap == rowIndex) {
-        let cell = document.getElementById("cell_" + rowIndex + "_" + colIndex);
+        let cell = document.getElementById(`cell_${rowIndex}_${colIndex}`);
         cell.style.borderRight = "none";
-        console.log("got one!");
       }
     }
   }
 }
-

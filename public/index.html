@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Welcome to Firebase Hosting</title>
+    <title>Maze game</title>
 
     <!-- update the version number as needed -->
     <script defer src="/__/firebase/7.22.0/firebase-app.js"></script>
@@ -31,7 +31,6 @@
     <nav class="container-fluid row">
         <div class="col-8 row">
             <h1>Maze game</h1>
-            <!-- <img src="../resources/deno.png" alt="deno-logo"> -->
         </div>
 
         <div class="col-4 row justify-content-end">
@@ -49,7 +48,7 @@
             <a class="dropdown-item" href="#">Hard</a>
             <a class="dropdown-item" href="#">Extreme</a>
         </div>
-        <button id="start" class="btn btn-secondary btn-lg" onclick="createBlankMaze()">Start Game</button>
+        <button id="start" class="btn btn-secondary btn-lg" onclick="createNewMaze(10, 10)">Start Game</button>
     </div>
     <div id="maze-container" class="container-fluid">
         <div id="maze-canvas">
