@@ -1,12 +1,17 @@
-// document.addEventListener("DOMContentLoaded", (event) => {
-//   const app = firebase.app();
-
-//   function showimage() {
-//     const storage = firebase.storage();
-//     const storageRef = storage.ref();
-//     var spaceRef = storageRef.child("images/deno.png");
-//   }
-// });
+document.addEventListener("DOMContentLoaded", (event) => {
+  const storage = firebase.storage();
+  const storageRef = storage.ref();
+  const imageRef = storageRef.child("images/deno.png");
+  imageRef.getDownloadURL().then(function (url) {
+    console.log(url);
+    const character = document.getElementById("character");
+    const img = document.createElement("img");
+    img.src = url;
+    character.appendChild(img);
+  }).catch(function (error) {
+    console.error(error);
+  });
+});
 
 /*  document.addEventListener("DOMContentLoaded", (event) => {
   const app = firebase.app();
