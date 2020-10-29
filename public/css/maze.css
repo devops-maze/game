@@ -65,9 +65,28 @@
   background-color: darkred;
 }
 
+#maze .gap {
+  border-right: none;
+}
+
 #character {
   background-color: blue;
   width: 80%;
   height: 80%;
   margin: auto;
+}
+
+#win-popup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50vw;
+  height: 50vw;
+  background-color: green;
+  z-index: 3;
 }
