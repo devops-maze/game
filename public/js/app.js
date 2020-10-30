@@ -60,42 +60,41 @@ function googleLogin() {
     .then((result) => {
       user = result.user;
       getUser();
-      firebase.auth().onAuthStateChanged(function(user) {
-        if (user == null) {
-          // User is signed in.
-      
-          document.getElementById("login-btn").style.display = "block";
-          document.getElementById("logout-btn").style.display = "none";
-      
-          user = firebase.auth().currentUser;
-      
-          /*if(user != null){
-      
-            var email_id = user.email;
-            document.getElementById("user_para").innerHTML = "Welcome User : " + email_id;
-      
-          }*/
-      
-        } else {
-          // No user is signed in.
-          document.getElementById("login-btn").style.display = "none";
-          document.getElementById("logout-btn").style.display = "block";
-          
-      
-        }
-      });
+      document.getElementById("login-btn").style.display = "none";
+      document.getElementById("logout-btn").style.display = "block";
       /*document.write(`Hello ${user.displayName}`);
       console.log(user);*/
     })
     .catch(console.log);
 }
 
+/*firebase.auth().onAuthStateChanged(function(user) {
+  if (user != null) {
+    // User is signed in.
+
+    /*if(user != null){
+
+      var email_id = user.email;
+      document.getElementById("user_para").innerHTML = "Welcome User : " + email_id;
+
+    }
+
+  } else {
+    // No user is signed in.
+    document.getElementById("login-btn").style.display = "block";
+    document.getElementById("logout-btn").style.display = "none";
+    
+
+  }
+});*/
+
 
 function logout() {
   firebase.auth().signOut().then(function() {
-    
+    document.getElementById("logout-btn").style.display = "none";
+    document.getElementById("login-btn").style.display = "block";
   }).catch(function(error) {
-  
+    console.error("Logout failed!");
   });  
   
 }
