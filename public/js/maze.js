@@ -2,8 +2,67 @@ window.addEventListener("DOMContentLoaded", (event) => {
   createNewMaze(10, 10);
 });
 
+const mazeWidth = 10;
+const mazeHeight = 10;
+
+let charPos;
+let posY;
+let posX;
+let steps;
+
+function moveCharacter(e) {
+  e = e || window.event;
+  const character = document.getElementById("character");
+  const isGap = (y, x) => {
+    if (y < 1 || x < 1 || y > 10 || x > 10) {
+      return console.log(`Out of bounds! 🔥`);
+    } else {
+      return document
+        .getElementById(`cell_${y}_${x}`)
+        .classList.contains("gap");
+    }
+  };
+
+  if (e.keyCode == "38") {
+    posY > 1 ? posY-- : (posY = 1);
+    steps++;
+  } else if (e.keyCode == "40") {
+    posY < 10 ? posY++ : (posY = mazeHeight);
+    steps++;
+  } else if (e.keyCode == "37" && isGap(posY, posX - 1)) {
+    posX > 1 ? posX-- : (posX = 1);
+    steps++;
+  } else if (e.keyCode == "39" && isGap(posY, posX)) {
+    posX < 10 ? posX++ : (posX = mazeWidth);
+    steps++;
+  }
+  charPos = `cell_${posY}_${posX}`;
+
+  character.parentNode.removeChild(character);
+  document.getElementById(charPos).appendChild(character);
+  console.log(steps);
+  checkWinCondition(charPos);
+}
+
+function checkWinCondition(pos) {
+  if (document.getElementById(pos).classList.contains("finish")) {
+    document.onkeydown = null;
+    const winPopup = document.getElementById("win-popup");
+    winPopup.style.display = "flex";
+    const p = document.createElement("p");
+    p.innerHTML = `${steps} steps`;
+    winPopup.appendChild(p);
+  }
+}
+
 function createNewMaze(mazeWidth, mazeHeight) {
+  charPos = "";
+  posY = 1;
+  posX = 1;
+  steps = 0;
   removeMaze();
+  document.onkeydown = moveCharacter;
+  document.getElementById("win-popup").style.display = "none";
 
   let div = () => document.createElement("div");
   const mazeCanvas = document.getElementById("maze-canvas");
@@ -57,7 +116,7 @@ function createGaps(mazeWidth, mazeHeight) {
     for (let rowIndex = 1; rowIndex <= mazeHeight; rowIndex++) {
       if (randomGap == rowIndex) {
         let cell = document.getElementById(`cell_${rowIndex}_${colIndex}`);
-        cell.style.borderRight = "none";
+        cell.classList.add("gap");
       }
     }
   }

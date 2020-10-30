@@ -65,6 +65,10 @@
   background-color: darkred;
 }
 
+#maze .gap {
+  border-right: none;
+}
+
 #character {
   width: 100%;
   height: 100%;
@@ -73,4 +77,19 @@
 #character > img{
   width: 100%;
   height: 100%;
+}
+
+#win-popup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20vw;
+  height: 20vw;
+  background-color: green;
+  z-index: 3;
 }
