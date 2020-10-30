@@ -24,10 +24,16 @@ nav h1 {
   text-align: center;
 }
 
-#login-btn {
+#login-btn, #logout-btn {
   padding: 0 2em;
   font-weight: 700;
   font-size: 20px;
+}
+#login-btn {
+  display: block;
+}
+#logout-btn {
+  display: none;
 }
 
 #controls button {
