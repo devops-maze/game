@@ -1,7 +1,7 @@
-# See current Live version on:
-- https://devops-project-44881.firebaseapp.com/
+# See current Live version on
 
-## Team:
-- Jankelic Iván
-- Hankóczki Döme
-- Jakab Ádám
+- [maze-game live](https://devops-project-44881.firebaseapp.com/)
+
+## Team
+
+- Jankelic Iván | Hankóczki Döme | Jakab Ádám
