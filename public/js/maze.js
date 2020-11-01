@@ -100,6 +100,7 @@ function createNewMaze(mazeWidth, mazeHeight) {
   mazeCanvas.appendChild(maze);
 
   createGaps(mazeWidth, mazeHeight);
+  placeCharacter();
 }
 
 function removeMaze() {
@@ -120,4 +121,23 @@ function createGaps(mazeWidth, mazeHeight) {
       }
     }
   }
+}
+
+const storage = firebase.storage();
+const storageRef = storage.ref();
+const imagesRef = storageRef.child("images");
+
+function placeCharacter() {
+  const charRef = imagesRef.child("deno.png");
+  charRef
+    .getDownloadURL()
+    .then(function (url) {
+      const character = document.getElementById("character");
+      const img = document.createElement("img");
+      img.src = url;
+      character.appendChild(img);
+    })
+    .catch(function (error) {
+      console.error(error);
+    });
 }
