@@ -29,7 +29,17 @@ function createNewMaze(mazeWidth, mazeHeight) {
       } else if (rowIndex === mazeHeight && colIndex === mazeWidth) {
         cell.classList.add("finish");
         cell.setAttribute("type", "finish");
-      }
+      } else
+        if (rowIndex === 1 && colIndex === 1) {
+          cell.classList.add("start");
+          cell.setAttribute("type", "start");
+          let target = div();
+          target.setAttribute("id", "target");
+          cell.appendChild(target);
+        } else if (rowIndex === mazeHeight && colIndex === mazeWidth) {
+          cell.classList.add("finish");
+          cell.setAttribute("type", "finish");
+        }
       cell.classList.add("maze-cell");
       cell.setAttribute("id", `cell_${rowIndex}_${colIndex}`);
 

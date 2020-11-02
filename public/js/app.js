@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   const storageRef = storage.ref();
   const imagesRef = storageRef.child("images");
   const charImg = imagesRef.child("deno.png");
-  imagesRef.getDownloadURL().then(function (url) {
+  charImg.getDownloadURL().then(function (url) {
     console.log(url);
     const character = document.getElementById("character");
     const img = document.createElement("img");
@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     console.error(error);
   });
   const targImg = imagesRef.child("portal.png");
-  imagesRef.getDownloadURL().then(function (url) {
+  targImg.getDownloadURL().then(function (url) {
     console.log(url);
     const target = document.getElementById("target");
     const img = document.createElement("img");
