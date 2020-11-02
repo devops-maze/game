@@ -1,8 +1,9 @@
 document.addEventListener("DOMContentLoaded", (event) => {
   const storage = firebase.storage();
   const storageRef = storage.ref();
-  const imageRef = storageRef.child("images/deno.png");
-  imageRef.getDownloadURL().then(function (url) {
+  const imagesRef = storageRef.child("images");
+  const charImg = imagesRef.child("deno.png");
+  imagesRef.getDownloadURL().then(function (url) {
     console.log(url);
     const character = document.getElementById("character");
     const img = document.createElement("img");
@@ -11,6 +12,17 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }).catch(function (error) {
     console.error(error);
   });
+  const targImg = imagesRef.child("portal.png");
+  imagesRef.getDownloadURL().then(function (url) {
+    console.log(url);
+    const target = document.getElementById("target");
+    const img = document.createElement("img");
+    img.src = url;
+    target.appendChild(img);
+  }).catch(function (error) {
+    console.error(error);
+  });
+
 });
 
 /*  document.addEventListener("DOMContentLoaded", (event) => {
