@@ -88,6 +88,9 @@ function createNewMaze(mazeWidth, mazeHeight) {
       } else if (rowIndex === mazeHeight && colIndex === mazeWidth) {
         cell.classList.add("finish");
         cell.setAttribute("type", "finish");
+        let target = div();
+        target.setAttribute("id", "target");
+        cell.appendChild(target);
       }
       cell.classList.add("maze-cell");
       cell.setAttribute("id", `cell_${rowIndex}_${colIndex}`);
@@ -101,6 +104,7 @@ function createNewMaze(mazeWidth, mazeHeight) {
 
   createGaps(mazeWidth, mazeHeight);
   placeCharacter();
+  placeTarget();
 }
 
 function removeMaze() {
@@ -128,14 +132,30 @@ const storageRef = storage.ref();
 const imagesRef = storageRef.child("images");
 
 function placeCharacter() {
-  const charRef = imagesRef.child("deno.png");
-  charRef
+  const charImg = imagesRef.child("deno.png");
+  charImg
     .getDownloadURL()
     .then(function (url) {
       const character = document.getElementById("character");
       const img = document.createElement("img");
       img.src = url;
       character.appendChild(img);
+    })
+    .catch(function (error) {
+      console.error(error);
+    });
+}
+
+function placeTarget() {
+  const targImg = imagesRef.child("portal.png");
+  targImg
+    .getDownloadURL()
+    .then(function (url) {
+      console.log(url);
+      const target = document.getElementById("target");
+      const img = document.createElement("img");
+      img.src = url;
+      target.appendChild(img);
     })
     .catch(function (error) {
       console.error(error);

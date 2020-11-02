@@ -74,7 +74,17 @@
   height: 100%;
 }
 
-#character > img{
+#character > img {
+  width: 100%;
+  height: 100%;
+}
+
+#target {
+  width: 100%;
+  height: 100%;
+}
+
+#target > img {
   width: 100%;
   height: 100%;
 }
