@@ -1,71 +1,4 @@
-document.addEventListener("DOMContentLoaded", (event) => {
-  const storage = firebase.storage();
-  const storageRef = storage.ref();
-  const imagesRef = storageRef.child("images");
-  const charImg = imagesRef.child("deno.png");
-  charImg.getDownloadURL().then(function (url) {
-    console.log(url);
-    const character = document.getElementById("character");
-    const img = document.createElement("img");
-    img.src = url;
-    character.appendChild(img);
-  }).catch(function (error) {
-    console.error(error);
-  });
-  const targImg = imagesRef.child("portal.png");
-  targImg.getDownloadURL().then(function (url) {
-    console.log(url);
-    const target = document.getElementById("target");
-    const img = document.createElement("img");
-    img.src = url;
-    target.appendChild(img);
-  }).catch(function (error) {
-    console.error(error);
-  });
-
-});
-
-/*  document.addEventListener("DOMContentLoaded", (event) => {
-  const app = firebase.app();
-  console.log(app);
-
-  const db = firebase.firestore();
-
-  const productsRef = db.collection("products");
-
-  productsRef
-    .where("price", ">", 25)
-    .get()
-    .then((products) => {
-      products.forEach((doc) => {
-        let data = doc.data();
-        document.write(`${data.name} at $${data.price} <br>`);
-      });
-    });
-*/
-/* Second instant refresh
-
-  const myPost = db.collection("posts").doc("firstpost");
-
-  myPost.onSnapshot((doc) => {
-    const data = doc.data();
-    document.querySelector("#title").innerHTML = data.title;
-  });*/
-
-/* DB call with instant refresh
-
-  const db = firebase.firestore();
-
-  const myPost = db.collection("posts").doc("firstpost");
-
-  myPost.onSnapshot((doc) => {
-    const data = doc.data();
-    document.write(data.title + `<br>`);
-    document.write(data.createdAt);
-  });
-});*/
-
-/* Google Login
+let user;
 
 function googleLogin() {
   const provider = new firebase.auth.GoogleAuthProvider();
@@ -74,16 +7,45 @@ function googleLogin() {
     .auth()
     .signInWithPopup(provider)
     .then((result) => {
-      const user = result.user;
-      document.write(`Hello ${user.displayName}`);
-      console.log(user);
+      user = result.user;
+      getUser();
+      document.getElementById("login-btn").style.display = "none";
+      document.getElementById("logout-btn").style.display = "block";
+      /*document.write(`Hello ${user.displayName}`);
+      console.log(user);*/
     })
     .catch(console.log);
-}*/
+}
 
-/* Second instant refresh
-function updatePost(event) {
+function logout() {
+  firebase
+    .auth()
+    .signOut()
+    .then(function () {
+      document.getElementById("logout-btn").style.display = "none";
+      document.getElementById("login-btn").style.display = "block";
+    })
+    .catch(function (error) {
+      console.error("Logout failed!");
+    });
+}
+
+function getUser() {
+  console.log(user);
   const db = firebase.firestore();
-  const myPost = db.collection("posts").doc("firstpost");
-  myPost.update({ title: event.target.value });
-}*/
+  const userScoresRef = db.collection("highscores").doc(user.email);
+  userScoresRef
+    .get()
+    .then(function (doc) {
+      if (doc.exists) {
+        console.log("Document data:", doc.data());
+        let scores = doc.data().scores;
+        console.log(scores);
+      } else {
+        console.log("No such document!");
+      }
+    })
+    .catch(function (error) {
+      console.log("Error getting document:", error);
+    });
+}
