@@ -91,7 +91,8 @@ function createNewMaze(mazeWidth, mazeHeight) {
         let target = div();
         target.setAttribute("id", "target");
         cell.appendChild(target);
-      } else cell.classList.add("maze-cell");
+      }
+      cell.classList.add("maze-cell");
       cell.setAttribute("id", `cell_${rowIndex}_${colIndex}`);
 
       column.appendChild(cell);
