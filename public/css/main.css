@@ -24,7 +24,7 @@ nav h1 {
   text-align: center;
 }
 
-#login-btn, #logout-btn {
+#login-btn, #logout-btn, #profile-btn {
   padding: 0 2em;
   font-weight: 700;
   font-size: 20px;
@@ -32,9 +32,22 @@ nav h1 {
 #login-btn {
   display: block;
 }
-#logout-btn {
+
+#profile-btn {
   display: none;
+  background-color: transparent;
+  border-radius: 50%;
+  border: none;
 }
+
+#profile-btn > img {
+  border-radius: 50%;
+  width: 60%;
+  height: 60%;
+}
+/*#logout-btn {
+  display: block;
+}*/
 
 #controls button {
   margin: 1rem;
@@ -52,3 +65,20 @@ nav h1 {
 .dropdown-item {
   color: azure;
 }
+
+.profile-dropdown-menu {
+  overflow: hidden;
+}
+
+.profile-dropdown-content {
+  display: none;
+  position: absolute;
+}
+.profile-dropdown-content a {
+  display: block;
+  background-color: rgba(24, 25, 26, 0.3);
+  text-align: center;
+  width: 100%;
+}
+
+.show {display:block;}

@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 });*/
 
 /* Google Login */
-let user;
+let user,name,email,photoUrl;
 
 function googleLogin() {
   const provider = new firebase.auth.GoogleAuthProvider();
@@ -64,11 +64,27 @@ function googleLogin() {
     .signInWithPopup(provider)
     .then((result) => {
       user = result.user;
-      getUser();
+      name = user.displayName;
+      email = user.email;
+      photoUrl = user.photoURL;
+      getUserScore();
+      let profile=document.getElementById("profile-btn")
+      let img = document.createElement("img");
+      img.src = photoUrl;
+      profile.appendChild(img);
+      const db = firebase.firestore();
+      let newHighscoreDocRef = db.collection("highscores").doc(user.email);
+      let setWithMerge = newHighscoreDocRef.set({
+          scores: []
+        },
+      { merge: true});
       document.getElementById("login-btn").style.display = "none";
-      document.getElementById("logout-btn").style.display = "block";
+      document.getElementById("profile-btn").style.display = "block";
       /*document.write(`Hello ${user.displayName}`);
       console.log(user);*/
+      console.log("  Name: " + name);
+      console.log("  Email: " + email);
+      console.log("  Photo URL: " + photoUrl);
     })
     .catch(console.log);
 }
@@ -87,7 +103,7 @@ function googleLogin() {
   } else {
     // No user is signed in.
     document.getElementById("login-btn").style.display = "block";
-    document.getElementById("logout-btn").style.display = "none";
+    document.getElementById("profile-btn").style.display = "none";
     
 
   }
@@ -96,7 +112,7 @@ function googleLogin() {
 
 function logout() {
   firebase.auth().signOut().then(function() {
-    document.getElementById("logout-btn").style.display = "none";
+    document.getElementById("profile-btn").style.display = "none";
     document.getElementById("login-btn").style.display = "block";
   }).catch(function(error) {
     console.error("Logout failed!");
@@ -104,7 +120,7 @@ function logout() {
   
 }
 
-function getUser() {
+function getUserScore() {
   console.log(user);
   const db = firebase.firestore();
   const userScoresRef = db.collection("highscores").doc(user.email);
@@ -126,7 +142,26 @@ function getUser() {
     });
 }
 
+/* opens the profile button */
 
+function profileOnClick() {
+  document.getElementById("myDropdown").classList.toggle("show");
+}
+
+//closes the profile button
+
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+    var dropdowns = document.getElementsByClassName("profile-dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
 
 /* Second instant refresh
 function updatePost(event) {

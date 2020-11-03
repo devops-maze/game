@@ -52,6 +52,7 @@ function checkWinCondition(pos) {
     const p = document.createElement("p");
     p.innerHTML = `${steps} steps`;
     winPopup.appendChild(p);
+    updateDoc();
   }
 }
 
@@ -120,4 +121,19 @@ function createGaps(mazeWidth, mazeHeight) {
       }
     }
   }
+}
+
+/*function addDocument(){
+  let newHighscoreDocRef = db.collection("highscores").doc(user.email);
+  let setWithMerge = newHighscoreDocRef.set({
+    scores: []
+    },
+    { merge: true});
+}*/
+
+function updateDoc(){
+  let newHighscoreDocRef = db.collection("highscores").doc(user.email);
+  newHighscoreDocRef.update({
+    scores: firebase.firestore.FieldValue.arrayUnion(steps)
+  });
 }
