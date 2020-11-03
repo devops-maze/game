@@ -1,7 +1,7 @@
 window.addEventListener("DOMContentLoaded", (event) => {
   createNewMaze(10, 10);
 });
-
+const db = firebase.firestore();
 const mazeWidth = 10;
 const mazeHeight = 10;
 

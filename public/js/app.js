@@ -1,6 +1,7 @@
 /* Google Login */
 let user,name,email,photoUrl;
 
+
 function googleLogin() {
   const provider = new firebase.auth.GoogleAuthProvider();
 
@@ -18,12 +19,6 @@ function googleLogin() {
       img.setAttribute("id","profile-image");
       img.src = photoUrl;
       profile.appendChild(img);
-      const db = firebase.firestore();
-      let newHighscoreDocRef = db.collection("highscores").doc(user.email);
-      let setWithMerge = newHighscoreDocRef.set({
-          scores: []
-        },
-      { merge: true});
       document.getElementById("login-btn").style.display = "none";
       document.getElementById("profile-btn").style.display = "block";
       /*document.write(`Hello ${user.displayName}`);
@@ -52,7 +47,6 @@ function logout() {
 
 function getUserScore() {
   console.log(user);
-  const db = firebase.firestore();
   const userScoresRef = db.collection("highscores").doc(user.email);
   userScoresRef
     .get()
