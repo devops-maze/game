@@ -17,6 +17,12 @@ body {
 nav {
   background-color: rgba(24, 25, 26, 0.5);
   padding: 1em;
+  height: 10vh;
+}
+
+nav > div {
+  height: 100%;
+  width: 100%;
 }
 
 nav h1 {
@@ -38,12 +44,14 @@ nav h1 {
   background-color: transparent;
   border-radius: 50%;
   border: none;
+  height: 100%;
+  width: auto;
 }
 
 #profile-btn > img {
   border-radius: 50%;
-  width: 60%;
-  height: 60%;
+  width: auto;
+  height: 100%;
 }
 /*#logout-btn {
   display: block;
@@ -68,6 +76,11 @@ nav h1 {
 
 .profile-dropdown-menu {
   overflow: hidden;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
 
 .profile-dropdown-content {

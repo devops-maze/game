@@ -13,8 +13,9 @@ function googleLogin() {
       email = user.email;
       photoUrl = user.photoURL;
       getUserScore();
-      let profile=document.getElementById("profile-btn")
+      let profile=document.getElementById("profile-btn");
       let img = document.createElement("img");
+      img.setAttribute("id","profile-image");
       img.src = photoUrl;
       profile.appendChild(img);
       const db = firebase.firestore();
@@ -41,6 +42,8 @@ function logout() {
     .then(function () {
       document.getElementById("logout-btn").style.display = "none";
       document.getElementById("login-btn").style.display = "block";
+      let image = document.getElementById("profile-image");
+      image.parentNode.removeChild(image);
     })
     .catch(function (error) {
       console.error("Logout failed!");
