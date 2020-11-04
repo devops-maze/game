@@ -83,50 +83,15 @@ nav h1 {
   align-items: center;
 }
 
-#profile-dropdown {
-  position: absolute;
-  top: 0;
-  right: 0;
-  margin-top: 10vh;
-  width: 20vw;
-  background-color: rgba(24, 25, 26, 0.3);
-  padding-bottom: 1em;
-  border-bottom-left-radius: 1em;
-}
-
 .profile-dropdown-content {
   display: none;
   position: absolute;
 }
-
-#highscores {
-  height: 100%;
-  padding: 1em;
-}
-
-#highscores .row {
-  justify-content: space-between;
-  align-items: center;
-}
-
-#highscore-title {
-  font-weight: 800;
-  font-size: large;
-}
-
-#highscore-number {
-  font-weight: 800;
-  font-size: large;
-}
-
-#logout-btn {
-  display: flex;
-  justify-content: center;
-  align-self: center;
-}
-
-#logout-btn > button {
+.profile-dropdown-content a {
+  display: block;
+  background-color: rgba(24, 25, 26, 0.3);
+  text-align: center;
   width: 100%;
-  padding: .2em 0;
 }
+
 .show {display:block;}

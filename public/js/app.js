@@ -67,7 +67,7 @@ function getUserScore() {
 /* opens the profile button */
 
 function profileOnClick() {
-  document.getElementById("profile-dropdown").classList.toggle("show");
+  document.getElementById("myDropdown").classList.toggle("show");
 }
 
 //closes the profile button
