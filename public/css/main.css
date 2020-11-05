@@ -83,9 +83,18 @@ nav h1 {
   align-items: center;
 }
 
-.profile-dropdown-content {
+
+
+#profile-dropdown {
   display: none;
   position: absolute;
+  top: 0;
+  right: 0;
+  margin-top: 10vh;
+  width: 20vw;
+  background-color: rgba(24, 25, 26, 0.3);
+  padding-bottom: 1em;
+  border-bottom-left-radius: 1em;
 }
 .profile-dropdown-content a {
   display: block;

@@ -5,6 +5,11 @@ const db = firebase.firestore();
 const mazeWidth = 10;
 const mazeHeight = 10;
 
+const winPopup = document.getElementById("win-popup");
+document.addEventListener("click", () => {
+  winPopup.style.display = "none";
+});
+
 let charPos;
 let posY;
 let posX;
@@ -136,10 +141,10 @@ function createGaps(mazeWidth, mazeHeight) {
     { merge: true});
 }*/
 
-function updateDoc(){
+function updateDoc() {
   let newHighscoreDocRef = db.collection("highscores").doc(user.email);
   newHighscoreDocRef.update({
-    scores: firebase.firestore.FieldValue.arrayUnion(steps)
+    scores: firebase.firestore.FieldValue.arrayUnion(steps),
   });
 }
 const storage = firebase.storage();
