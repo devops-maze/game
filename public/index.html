@@ -33,30 +33,6 @@
             <button id="login-btn" class="btn btn-primary btn-lg" onclick="googleLogin()">Login</button>
             <div class="profile-dropdown-menu">
             <button  id="profile-btn" onclick="profileOnClick()" class="dropbtn"></button>
-            <div id="profile-dropdown" class="profile-dropdown-content">
-                <div id="highscores">
-                    <div class="row" id="easy">
-                        <h3 id="highscore-title">&#127853; Easy :</h3>
-                        <p id="highscore-number">12 steps</p>
-                    </div>
-                    <div class="row" id="medium">
-                        <h3 id="highscore-title">&#128585; Medium :</h3>
-                        <p id="highscore-number">34 steps</p>
-                    </div>
-                    <div class="row" id="hard">
-                        <h3 id="highscore-title">&#129409; Hard :</h3>
-                        <p id="highscore-number">54 steps</p>
-                    </div>
-                    <div class="row" id="extreme">
-                        <h3 id="highscore-title">&#128121; Extreme :</h3>
-                        <p id="highscore-number">123 steps</p>
-                    </div>
-                </div>
-                <div class="row" id="logout-btn" onclick="logout()">
-                    <button class="btn btn-danger btn-lg">Logout</button>
-                </div>
-          </div>
-        </div>
         </div>
     </nav>
     <div id="controls" class="container-fluid row justify-content-center">
@@ -65,10 +41,10 @@
             Difficulty
         </button>
         <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Easy</a>
-            <a class="dropdown-item" href="#">Medium</a>
-            <a class="dropdown-item" href="#">Hard</a>
-            <a class="dropdown-item" href="#">Extreme</a>
+            <a class="dropdown-item" onclick="createNewMaze(5)">Easy</a>
+            <a class="dropdown-item" onclick="createNewMaze(10)">Medium</a>
+            <a class="dropdown-item" onclick="createNewMaze(20)">Hard</a>
+            <a class="dropdown-item" onclick="createNewMaze(25)">Extreme</a>
         </div>
         <button id="start" class="btn btn-secondary btn-lg" onclick="createNewMaze(10, 10)">Start Game</button>
     </div>
@@ -81,14 +57,37 @@
         <h1>You won!</h1>
     </div>
     <!-- Google Login
-    <h1>Hello firebase world!</h1>
+        <h1>Hello firebase world!</h1>
 
-    <button onclick="googleLogin()">Login with Google</button>
+        <button onclick="googleLogin()">Login with Google</button>
     -->
     <!-- Second instant refresh
-    <h1 id="title"></h1>
-    <input onChange="updatePost(event)" />
+        <h1 id="title"></h1>
+        <input onChange="updatePost(event)" />
     -->
+    <div id="profile-dropdown" class="profile-dropdown-content">
+        <div id="highscores">
+            <div class="row" id="easy">
+                <h3 id="highscore-title">&#127853; Easy :</h3>
+                <p id="highscore-number">12 steps</p>
+            </div>
+            <div class="row" id="medium">
+                <h3 id="highscore-title">&#128585; Medium :</h3>
+                <p id="highscore-number">34 steps</p>
+            </div>
+            <div class="row" id="hard">
+                <h3 id="highscore-title">&#129409; Hard :</h3>
+                <p id="highscore-number">54 steps</p>
+            </div>
+            <div class="row" id="extreme">
+                <h3 id="highscore-title">&#128121; Extreme :</h3>
+                <p id="highscore-number">123 steps</p>
+            </div>
+        </div>
+        <div class="row" id="logout-btn" onclick="logout()">
+            <button class="btn btn-danger btn-lg">Logout</button>
+        </div>
+    </div>
     <script src="js/maze.js"></script>
     <script src="js/app.js"></script>
 </body>
