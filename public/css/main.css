@@ -17,6 +17,12 @@ body {
 nav {
   background-color: rgba(24, 25, 26, 0.5);
   padding: 1em;
+  height: 10vh;
+}
+
+nav > div {
+  height: 100%;
+  width: 100%;
 }
 
 nav h1 {
@@ -24,7 +30,7 @@ nav h1 {
   text-align: center;
 }
 
-#login-btn, #logout-btn {
+#login-btn, #logout-btn, #profile-btn {
   padding: 0 2em;
   font-weight: 700;
   font-size: 20px;
@@ -32,9 +38,24 @@ nav h1 {
 #login-btn {
   display: block;
 }
-#logout-btn {
+
+#profile-btn {
   display: none;
+  background-color: transparent;
+  border-radius: 50%;
+  border: none;
+  height: 100%;
+  width: auto;
 }
+
+#profile-btn > img {
+  border-radius: 50%;
+  width: auto;
+  height: 100%;
+}
+/*#logout-btn {
+  display: block;
+}*/
 
 #controls button {
   margin: 1rem;
@@ -52,3 +73,60 @@ nav h1 {
 .dropdown-item {
   color: azure;
 }
+
+.profile-dropdown-menu {
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+
+
+#profile-dropdown {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-top: 10vh;
+  width: 20vw;
+  background-color: rgba(24, 25, 26, 0.3);
+  padding-bottom: 1em;
+  border-bottom-left-radius: 1em;
+ }
+  
+ #highscores {
+  height: 100%;
+  padding: 1em;
+ }
+  
+ #highscores .row {
+  justify-content: space-between;
+  align-items: center;
+ }
+  
+ #highscore-title {
+  font-weight: 800;
+  font-size: large;
+ }
+  
+ #highscore-number {
+  font-weight: 800;
+  font-size: large;
+ }
+  
+ #logout-btn {
+  display: flex;
+  justify-content: center;
+  align-self: center;
+ }
+  
+ #logout-btn > button {
+  width: 100%;
+  padding: .2em 0;
+ }
+
+
+.show {display:block;}
