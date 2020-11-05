@@ -1,5 +1,5 @@
 window.addEventListener("DOMContentLoaded", (event) => {
-  createNewMaze(10, 10);
+  createNewMaze(10);
 });
 const db = firebase.firestore();
 const mazeWidth = 10;
@@ -18,8 +18,10 @@ let steps;
 function moveCharacter(e) {
   e = e || window.event;
   const character = document.getElementById("character");
+  let mazeDimensions = document.getElementById("maze").children.length;
+
   const isGap = (y, x) => {
-    if (y < 1 || x < 1 || y > 10 || x > 10) {
+    if (y < 1 || x < 1 || y > mazeDimensions || x > mazeDimensions) {
       return console.log(`Out of bounds! 🔥`);
     } else {
       return document
@@ -32,13 +34,13 @@ function moveCharacter(e) {
     posY > 1 ? posY-- : (posY = 1);
     steps++;
   } else if (e.keyCode == "40") {
-    posY < 10 ? posY++ : (posY = mazeHeight);
+    posY < mazeDimensions ? posY++ : (posY = mazeDimensions);
     steps++;
   } else if (e.keyCode == "37" && isGap(posY, posX - 1)) {
     posX > 1 ? posX-- : (posX = 1);
     steps++;
   } else if (e.keyCode == "39" && isGap(posY, posX)) {
-    posX < 10 ? posX++ : (posX = mazeWidth);
+    posX < mazeDimensions ? posX++ : (posX = mazeDimensions);
     steps++;
   }
   charPos = `cell_${posY}_${posX}`;
@@ -52,7 +54,6 @@ function moveCharacter(e) {
 function checkWinCondition(pos) {
   if (document.getElementById(pos).classList.contains("finish")) {
     document.onkeydown = null;
-    const winPopup = document.getElementById("win-popup");
     winPopup.style.display = "flex";
     const p = document.createElement("p");
     p.innerHTML = `${steps} steps`;
@@ -61,7 +62,7 @@ function checkWinCondition(pos) {
   }
 }
 
-function createNewMaze(mazeWidth, mazeHeight) {
+function createNewMaze(mazeDimensions) {
   charPos = "";
   posY = 1;
   posX = 1;
@@ -76,13 +77,36 @@ function createNewMaze(mazeWidth, mazeHeight) {
   const maze = div();
   maze.setAttribute("id", "maze");
 
-  for (let rowIndex = 1; rowIndex <= mazeHeight; rowIndex++) {
+  for (let rowIndex = 1; rowIndex <= mazeDimensions; rowIndex++) {
     let row = div();
     row.classList.add("maze-row");
+    if (mazeDimensions == 5) {
+      row.classList.add("row-5");
+    } else if (mazeDimensions == 10) {
+      row.classList.add("row-10");
+    } else if (mazeDimensions == 20) {
+      row.classList.add("row-20");
+    } else if (mazeDimensions == 25) {
+      row.classList.add("row-25");
+    } else {
+      console.error(mazeDimensions + " is not a valid maze layout!");
+    }
 
-    for (let colIndex = 1; colIndex <= mazeWidth; colIndex++) {
+    for (let colIndex = 1; colIndex <= mazeDimensions; colIndex++) {
       let column = div();
-      column.classList.add("maze-column");
+
+      if (mazeDimensions == 5) {
+        column.classList.add("column-5");
+      } else if (mazeDimensions == 10) {
+        column.classList.add("column-10");
+      } else if (mazeDimensions == 20) {
+        column.classList.add("column-20");
+      } else if (mazeDimensions == 25) {
+        column.classList.add("column-25");
+      } else {
+        console.error(mazeDimensions + " is not a valid maze layout!");
+      }
+
       let cell = div();
 
       if (rowIndex === 1 && colIndex === 1) {
@@ -91,7 +115,7 @@ function createNewMaze(mazeWidth, mazeHeight) {
         let character = div();
         character.setAttribute("id", "character");
         cell.appendChild(character);
-      } else if (rowIndex === mazeHeight && colIndex === mazeWidth) {
+      } else if (rowIndex === mazeDimensions && colIndex === mazeDimensions) {
         cell.classList.add("finish");
         cell.setAttribute("type", "finish");
         let target = div();
@@ -108,7 +132,7 @@ function createNewMaze(mazeWidth, mazeHeight) {
   }
   mazeCanvas.appendChild(maze);
 
-  createGaps(mazeWidth, mazeHeight);
+  createGaps(mazeDimensions);
   placeCharacter();
   placeTarget();
 }
@@ -121,10 +145,10 @@ function removeMaze() {
   }
 }
 
-function createGaps(mazeWidth, mazeHeight) {
-  for (let colIndex = 1; colIndex <= mazeWidth - 1; colIndex++) {
-    let randomGap = Math.floor(Math.random() * 9) + 1;
-    for (let rowIndex = 1; rowIndex <= mazeHeight; rowIndex++) {
+function createGaps(mazeDimensions) {
+  for (let colIndex = 1; colIndex <= mazeDimensions - 1; colIndex++) {
+    let randomGap = Math.floor(Math.random() * (mazeDimensions - 1)) + 1;
+    for (let rowIndex = 1; rowIndex <= mazeDimensions; rowIndex++) {
       if (randomGap == rowIndex) {
         let cell = document.getElementById(`cell_${rowIndex}_${colIndex}`);
         cell.classList.add("gap");

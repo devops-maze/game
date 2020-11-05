@@ -65,9 +65,14 @@ function getUserScore() {
 }
 
 /* opens the profile button */
-
+let profiledb=document.getElementById("profile-dropdown");
 function profileOnClick() {
-  document.getElementById("myDropdown").classList.toggle("show");
+  if(profiledb.style.display=="none") {
+    profiledb.style.display="flex";
+  }
+  else if (profiledb.style.display="flex"){
+    profiledb.style.display="none";
+  }
 }
 
 //closes the profile button
