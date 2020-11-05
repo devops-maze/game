@@ -167,10 +167,29 @@ function createGaps(mazeDimensions) {
 
 function updateDoc() {
   let newHighscoreDocRef = db.collection("highscores").doc(user.email);
-  newHighscoreDocRef.update({
-    scores: firebase.firestore.FieldValue.arrayUnion(steps),
+  let mazeDimensions = document.getElementById("maze").children.length;
+  if(mazeDimensions==5){
+	newHighscoreDocRef.update({
+    easy: firebase.firestore.FieldValue.arrayUnion(steps)
   });
+  }
+  else if(mazeDimensions==10){
+	  newHighscoreDocRef.update({
+    medium: firebase.firestore.FieldValue.arrayUnion(steps)
+  });
+  }
+  else if (mazeDimensions==20){
+	  newHighscoreDocRef.update({
+    hard: firebase.firestore.FieldValue.arrayUnion(steps)
+  });
+  }
+  else {
+	  newHighscoreDocRef.update({
+    extreme: firebase.firestore.FieldValue.arrayUnion(steps)
+  });
+  }
 }
+
 const storage = firebase.storage();
 const storageRef = storage.ref();
 const imagesRef = storageRef.child("images");

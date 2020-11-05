@@ -53,8 +53,22 @@ function getUserScore() {
     .then(function (doc) {
       if (doc.exists) {
         console.log("Document data:", doc.data());
-        let scores = doc.data().scores;
-        console.log(scores);
+        let easy = doc.data().easy;
+		    let medium = doc.data().medium;
+		    let hard = doc.data().hard;
+        let extreme = doc.data().extreme;
+        let easyDiv=document.querySelector("#easy p");
+        let mediumDiv=document.querySelector("#medium p");
+        let hardDiv=document.querySelector("#hard p");
+        let extremeDiv=document.querySelector("#extreme p");
+        easyDiv.innerHTML=`${easy[0]} steps`;
+        mediumDiv.innerHTML=`${medium[0]} steps`;
+        hardDiv.innerHTML=`${hard[0]} steps`;
+        extremeDiv.innerHTML=`${extreme[0]} steps`;
+        console.log(easy);
+		    console.log(medium);
+		    console.log(hard);
+		    console.log(extreme);
       } else {
         console.log("No such document!");
       }
@@ -68,9 +82,9 @@ function getUserScore() {
 let profiledb=document.getElementById("profile-dropdown");
 function profileOnClick() {
   if(profiledb.style.display=="none") {
-    profiledb.style.display="flex";
+    profiledb.style.display="block";
   }
-  else if (profiledb.style.display="flex"){
+  else if (profiledb.style.display="block"){
     profiledb.style.display="none";
   }
 }
