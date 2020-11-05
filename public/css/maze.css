@@ -30,15 +30,51 @@
   z-index: 2;
 }
 
-.maze-row {
+.row-5 {
+  display: flex;
+  width: 100%;
+  height: 20%;
+}
+
+.column-5 {
+  display: flex;
+  width: 20%;
+  height: 100%;
+}
+
+.row-10 {
   display: flex;
   width: 100%;
   height: 10%;
 }
 
-.maze-column {
+.column-10 {
   display: flex;
   width: 10%;
+  height: 100%;
+}
+
+.row-20 {
+  display: flex;
+  width: 100%;
+  height: 5%;
+}
+
+.column-20 {
+  display: flex;
+  width: 5%;
+  height: 100%;
+}
+
+.row-25 {
+  display: flex;
+  width: 100%;
+  height: 4%;
+}
+
+.column-25 {
+  display: flex;
+  width: 4%;
   height: 100%;
 }
 
@@ -51,7 +87,19 @@
   align-items: center;
 }
 
-.maze-column:not(:last-of-type) .maze-cell {
+.column-5:not(:last-of-type) .maze-cell {
+  border-right: 2px rgba(47, 50, 47, 0.7) solid;
+}
+
+.column-10:not(:last-of-type) .maze-cell {
+  border-right: 2px rgba(47, 50, 47, 0.7) solid;
+}
+
+.column-20:not(:last-of-type) .maze-cell {
+  border-right: 2px rgba(47, 50, 47, 0.7) solid;
+}
+
+.column-25:not(:last-of-type) .maze-cell {
   border-right: 2px rgba(47, 50, 47, 0.7) solid;
 }
 
@@ -69,21 +117,9 @@
   border-right: none;
 }
 
-#character {
-  width: 100%;
-  height: 100%;
-}
-
-#character > img {
-  width: 100%;
-  height: 100%;
-}
-
-#target {
-  width: 100%;
-  height: 100%;
-}
-
+#character,
+#character > img,
+#target,
 #target > img {
   width: 100%;
   height: 100%;
@@ -100,6 +136,6 @@
   transform: translate(-50%, -50%);
   width: 20vw;
   height: 20vw;
-  background-color: green;
+  background-color: rgba(47, 50, 47, 0.9);
   z-index: 3;
 }

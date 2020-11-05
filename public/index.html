@@ -40,10 +40,10 @@
             Difficulty
         </button>
         <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Easy</a>
-            <a class="dropdown-item" href="#">Medium</a>
-            <a class="dropdown-item" href="#">Hard</a>
-            <a class="dropdown-item" href="#">Extreme</a>
+            <a class="dropdown-item" onclick="createNewMaze(5)">Easy</a>
+            <a class="dropdown-item" onclick="createNewMaze(10)">Medium</a>
+            <a class="dropdown-item" onclick="createNewMaze(20)">Hard</a>
+            <a class="dropdown-item" onclick="createNewMaze(25)">Extreme</a>
         </div>
         <button id="start" class="btn btn-secondary btn-lg" onclick="createNewMaze(10, 10)">Start Game</button>
     </div>
