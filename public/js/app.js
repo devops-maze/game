@@ -1,6 +1,5 @@
 /* Google Login */
-let user,name,email,photoUrl;
-
+let user, name, email, photoUrl;
 
 function googleLogin() {
   const provider = new firebase.auth.GoogleAuthProvider();
@@ -14,9 +13,9 @@ function googleLogin() {
       email = user.email;
       photoUrl = user.photoURL;
       getUserScore();
-      let profile=document.getElementById("profile-btn");
+      let profile = document.getElementById("profile-btn");
       let img = document.createElement("img");
-      img.setAttribute("id","profile-image");
+      img.setAttribute("id", "profile-image");
       img.src = photoUrl;
       profile.appendChild(img);
       document.getElementById("login-btn").style.display = "none";
@@ -46,29 +45,25 @@ function logout() {
 }
 
 function getUserScore() {
-  console.log(user);
   const userScoresRef = db.collection("highscores").doc(user.email);
   userScoresRef
     .get()
     .then(function (doc) {
       if (doc.exists) {
-        console.log("Document data:", doc.data());
         let easy = doc.data().easy;
-		    let medium = doc.data().medium;
-		    let hard = doc.data().hard;
+        let medium = doc.data().medium;
+        let hard = doc.data().hard;
         let extreme = doc.data().extreme;
-        let easyDiv=document.querySelector("#easy p");
-        let mediumDiv=document.querySelector("#medium p");
-        let hardDiv=document.querySelector("#hard p");
-        let extremeDiv=document.querySelector("#extreme p");
-        easyDiv.innerHTML=`${easy[0]} steps`;
-        mediumDiv.innerHTML=`${medium[0]} steps`;
-        hardDiv.innerHTML=`${hard[0]} steps`;
-        extremeDiv.innerHTML=`${extreme[0]} steps`;
-        console.log(easy);
-		    console.log(medium);
-		    console.log(hard);
-		    console.log(extreme);
+
+        let easyDiv = document.querySelector("#easy p");
+        let mediumDiv = document.querySelector("#medium p");
+        let hardDiv = document.querySelector("#hard p");
+        let extremeDiv = document.querySelector("#extreme p");
+
+        easyDiv.innerHTML = `${easy[0]} steps`;
+        mediumDiv.innerHTML = `${medium[0]} steps`;
+        hardDiv.innerHTML = `${hard[0]} steps`;
+        extremeDiv.innerHTML = `${extreme[0]} steps`;
       } else {
         console.log("No such document!");
       }
@@ -79,28 +74,12 @@ function getUserScore() {
 }
 
 /* opens the profile button */
-let profiledb=document.getElementById("profile-dropdown");
+let profiledb = document.getElementById("profile-dropdown");
 function profileOnClick() {
-  if(profiledb.style.display=="none") {
-    profiledb.style.display="block";
-  }
-  else if (profiledb.style.display="block"){
-    profiledb.style.display="none";
-  }
-}
-
-//closes the profile button
-
-window.onclick = function(event) {
-  if (!event.target.matches('.dropbtn')) {
-    var dropdowns = document.getElementsByClassName("profile-dropdown-content");
-    var i;
-    for (i = 0; i < dropdowns.length; i++) {
-      var openDropdown = dropdowns[i];
-      if (openDropdown.classList.contains('show')) {
-        openDropdown.classList.remove('show');
-      }
-    }
+  if (profiledb.style.display == "none") {
+    profiledb.style.display = "block";
+  } else if ((profiledb.style.display = "block")) {
+    profiledb.style.display = "none";
   }
 }
 

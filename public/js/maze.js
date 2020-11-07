@@ -8,6 +8,8 @@ const mazeHeight = 10;
 const winPopup = document.getElementById("win-popup");
 document.addEventListener("click", () => {
   winPopup.style.display = "none";
+  const p = document.querySelector("#win-popup p");
+  winPopup.removeChild(p);
 });
 
 let charPos;
@@ -47,7 +49,6 @@ function moveCharacter(e) {
 
   character.parentNode.removeChild(character);
   document.getElementById(charPos).appendChild(character);
-  console.log(steps);
   checkWinCondition(charPos);
 }
 
@@ -56,7 +57,8 @@ function checkWinCondition(pos) {
     document.onkeydown = null;
     winPopup.style.display = "flex";
     const p = document.createElement("p");
-    p.innerHTML = `${steps} steps`;
+    p.innerHTML = `You took ${steps} steps to complete the map`;
+    p.classList.add("row");
     winPopup.appendChild(p);
     updateDoc();
   }

@@ -103,14 +103,9 @@
   border-right: 2px rgba(47, 50, 47, 0.7) solid;
 }
 
-.finish {
-  background-color: lightgreen;
-  border-bottom-right-radius: 0.1em;
-}
-
+.finish,
 .start {
   border-top-left-radius: 0.1em;
-  background-color: darkred;
 }
 
 #maze .gap {
@@ -127,15 +122,26 @@
 
 #win-popup {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
-  margin: 0;
+  flex-wrap: wrap;
+  margin: auto;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 20vw;
-  height: 20vw;
+  width: 50vw;
+  height: 50vh;
   background-color: rgba(47, 50, 47, 0.9);
+  border-radius: .5em;
   z-index: 3;
+  font-size: x-large;
+}
+
+#win-popup h1 {
+  font-size: 5vw;
+}
+
+#win-popup p {
+  font-size: 2vw;
 }
