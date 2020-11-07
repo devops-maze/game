@@ -49,16 +49,20 @@ nav h1 {
   border: none;
   height: 100%;
   width: auto;
+  outline: none;
 }
 
 #profile-btn > img {
-  border-radius: 50%;
   width: auto;
   height: 100%;
+  border-radius: 50%;
 }
-/*#logout-btn {
-  display: block;
-}*/
+
+#profile-btn > img:hover {
+  box-sizing: border-box;
+  border: 2px solid #1c7bff;
+  border-radius: 50%;
+}
 
 #controls button {
   margin: 1rem;
