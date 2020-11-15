@@ -11,10 +11,11 @@ let mazeDimensions = {
 
 function initMaze(dimensions) {
   removeMaze();
-  createNewMaze(dimensions);
-  createGaps(dimensions);
-  placeCharacter();
-  placeTarget();
-  document.onkeydown = moveCharacter;
+  createBlankMaze(dimensions);
+  // traverse();
+  // createGaps(dimensions);
+  // placeCharacter();
+  // placeTarget();
+  // document.onkeydown = moveCharacter;
 }
 
