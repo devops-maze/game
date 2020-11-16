@@ -2,7 +2,7 @@ class Node {
   constructor(id) {
     this.id = id;
     this.visited = false;
-    this.exits = ["up",  "down",  "left",  "right"];
+    this.exits = ["up", "down", "left", "right"];
   }
 
   visualize() {
@@ -31,40 +31,68 @@ class Character {
   }
 
   move() {
+    this.devisualize();
     let currentNode = nodeList.find(({ id }) => id === this.position);
     let direction;
     let nextDirection;
 
     const randomMove = this.directions[Math.floor(Math.random() * 4)];
 
-    if (randomMove == "up" && this.posY > 1 && currentNode.exits.includes("up")) {
-      this.posY--;
-      direction = "up";
-      nextDirection = "down";
-    } else if (randomMove == "down" && this.posY < this.bounds && currentNode.exits.includes("down")) {
-      this.posY++;
-      direction = "down";
-      nextDirection = "up";
-    } else if (randomMove == "left" && this.posX > 1 && currentNode.exits.includes("left")) {
-      this.posX--;
-      direction = "left";
-      nextDirection = "right";
-    } else if (randomMove == "right" && this.posX < this.bounds && currentNode.exits.includes("right")) {
-      this.posX++;
-      direction = "right";
-      nextDirection = "left";
-    } else {
-      return this.move();
+    if (currentNode.exits.length > 0) {
+      if (randomMove == "up" && this.posY > 1 && currentNode.exits.includes("up")) {
+        this.posY--;
+        direction = "up";
+        nextDirection = "down";
+      } else if (randomMove == "down" && this.posY < this.bounds && currentNode.exits.includes("down")) {
+        this.posY++;
+        direction = "down";
+        nextDirection = "up";
+      } else if (randomMove == "left" && this.posX > 1 && currentNode.exits.includes("left")) {
+        this.posX--;
+        direction = "left";
+        nextDirection = "right";
+      } else if (randomMove == "right" && this.posX < this.bounds && currentNode.exits.includes("right")) {
+        this.posX++;
+        direction = "right";
+        nextDirection = "left";
+      }
     }
-    currentNode.exits = currentNode.exits.filter(v => v != direction);
+
+    currentNode.exits = currentNode.exits.filter((v) => v != direction);
     this.position = `cell_${this.posY}_${this.posX}`;
 
     let nextNode = nodeList.find(({ id }) => id === this.position);
-    nextNode.exits = nextNode.exits.filter(v => v != nextDirection);
+    nextNode.exits = nextNode.exits.filter((v) => v != nextDirection);
+
+    if (nextNode.visited) {
+      if (direction === "up") {
+        this.posY++;
+      } else if (direction === "down") {
+        this.posY--;
+      } else if (direction === "left") {
+        this.posX++;
+      } else if (direction === "right") {
+        this.posX--;
+      }
+      this.position = `cell_${this.posY}_${this.posX}`;
+      nextNode = nodeList.find(({ id }) => id === this.position);
+      this.visualize();
+      return console.table(nextNode);
+    }
 
     nextNode.visit();
-
+    this.visualize();
     return console.table(nextNode);
+  }
+
+  devisualize() {
+    let cell = document.getElementById(this.position);
+    cell.firstElementChild.classList.remove("char");
+  }
+
+  visualize() {
+    let cell = document.getElementById(this.position);
+    cell.firstElementChild.classList.add("char");
   }
 }
 

@@ -18,4 +18,3 @@ function initMaze(dimensions) {
   // placeTarget();
   // document.onkeydown = moveCharacter;
 }
-

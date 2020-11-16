@@ -135,7 +135,7 @@
   width: 50vw;
   height: 50vh;
   background-color: rgba(47, 50, 47, 0.9);
-  border-radius: .5em;
+  border-radius: 0.5em;
   z-index: 3;
   font-size: x-large;
 }
@@ -157,4 +157,8 @@
 
 .node.visited {
   background-color: darkblue;
+}
+
+.node.char {
+  background-color: greenyellow;
 }
