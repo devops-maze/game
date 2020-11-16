@@ -36,7 +36,13 @@ class Character {
     let direction;
     let nextDirection;
 
-    const randomMove = this.directions[Math.floor(Math.random() * 4)];
+    let randomMove;
+    if (currentNode.exits.length === 1) {
+      randomMove = currentNode.exits[0];
+    } else {
+      randomMove = this.directions[Math.floor(Math.random() * 4)];
+    }
+    console.log(randomMove);
 
     if (currentNode.exits.length > 0) {
       if (randomMove == "up" && this.posY > 1 && currentNode.exits.includes("up")) {
@@ -64,6 +70,7 @@ class Character {
     let nextNode = nodeList.find(({ id }) => id === this.position);
     nextNode.exits = nextNode.exits.filter((v) => v != nextDirection);
 
+    // TODO: extend this code to enable for backtracking.
     if (nextNode.visited) {
       if (direction === "up") {
         this.posY++;
