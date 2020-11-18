@@ -36,10 +36,10 @@
     <div id="controls" class="container-fluid row justify-content-center">
       <button class="btn btn-dark btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Difficulty</button>
       <div class="dropdown-menu">
-        <a class="dropdown-item" onclick="mazeDimensions.setValue(5)">Easy</a>
-        <a class="dropdown-item" onclick="mazeDimensions.setValue(10)">Medium</a>
-        <a class="dropdown-item" onclick="mazeDimensions.setValue(20)">Hard</a>
-        <a class="dropdown-item" onclick="mazeDimensions.setValue(25)">Extreme</a>
+        <a class="dropdown-item" onclick="maze.dimensions = 5">Easy</a>
+        <a class="dropdown-item" onclick="maze.dimensions = 10">Medium</a>
+        <a class="dropdown-item" onclick="maze.dimensions = 20">Hard</a>
+        <a class="dropdown-item" onclick="maze.dimensions = 25">Extreme</a>
       </div>
       <button id="start" class="btn btn-secondary btn-lg" onclick="initMaze(mazeDimensions.value)">Start Game</button>
     </div>

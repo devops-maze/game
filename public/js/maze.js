@@ -27,11 +27,12 @@ class Character {
     this.posY = 1;
     this.posX = 1;
     this.position = `cell_1_1`;
+    this.backtrack = [nodeList[0]];
     this.path = [nodeList[0]];
   }
 
   move() {
-    if (this.path.length == 100) {
+    if (this.backtrack.length == 100) {
       return console.log("Fucked");
     }
 
@@ -48,18 +49,18 @@ class Character {
     }
 
     if (currentNode.exits.length === 0) {
-      let i = this.path.length - 1;
+      let i = this.backtrack.length - 1;
       while (currentNode.exits.length === 0) {
         this.devisualize();
-        currentNode = this.path[i];
+        currentNode = this.backtrack[i];
         i--;
       }
       this.position = `${currentNode.id}`;
       this.posY = currentNode.posY;
       this.posX = currentNode.posX;
+      this.path.push(currentNode);
 
       this.visualize();
-      console.log("Megbassza 🔥 🚒 🔥");
 
       return;
     } else if (currentNode.exits.length > 0) {
@@ -101,7 +102,6 @@ class Character {
 
       nextNode = nodeList.find(({ id }) => id === this.position);
       this.visualize();
-      console.table(nextNode);
 
       return;
     }
@@ -109,8 +109,9 @@ class Character {
     nextNode.visit();
     this.visualize();
 
+    this.backtrack.push(nextNode);
     this.path.push(nextNode);
-    return console.log(this.path);
+    return;
   }
 
   devisualize() {
@@ -195,12 +196,39 @@ function createBlankMaze(mazeDimensions) {
   };
 
   visitFirstCell();
+}
 
-  document.body.onkeydown = function (e) {
-    if (e.keyCode == 32) {
-      character.move();
+function createPath() {
+  while (character.backtrack.length < 100) {
+    character.move();
+  }
+  console.log(character.path);
+  return character.path;
+}
+
+function generateMazeWalls(path) {
+  console.log(path);
+  for (let i = 0; i < path.length - 1; i++) {
+    const step = path[i];
+    const nextStep = path[i + 1];
+    if (step.posY > nextStep.posY) {
+      // moving UP
+      $(`#${step.id}`).addClass("no-top-border");
+      $(`#${nextStep.id}`).addClass("no-bottom-border");
+    } else if (step.posY < nextStep.posY) {
+      // moving DOWN
+      $(`#${step.id}`).addClass("no-bottom-border");
+      $(`#${nextStep.id}`).addClass("no-top-border");
+    } else if (step.posX > nextStep.posX) {
+      // moving LEFT
+      $(`#${step.id}`).addClass("no-left-border");
+      $(`#${nextStep.id}`).addClass("no-right-border");
+    } else if (step.posX < nextStep.posX) {
+      // moving RIGHT
+      $(`#${step.id}`).addClass("no-right-border");
+      $(`#${nextStep.id}`).addClass("no-left-border");
     }
-  };
+  }
 }
 
 function removeMaze() {

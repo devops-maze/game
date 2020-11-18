@@ -1,17 +1,22 @@
 window.addEventListener("DOMContentLoaded", () => {
-  initMaze(mazeDimensions.value);
+  initMaze(maze.dimensions);
 });
 
-let mazeDimensions = {
-  value: 10,
-  setValue(value) {
-    this.value = value;
-  },
-};
+class Maze {
+  constructor(dimensions) {
+    this.dimensions = dimensions;
+    this.path = [];
+  }
+}
+
+let maze = new Maze(10);
 
 function initMaze(dimensions) {
   removeMaze();
   createBlankMaze(dimensions);
+  maze.path = createPath();
+  generateMazeWalls(maze.path);
+
   // traverse();
   // createGaps(dimensions);
   // placeCharacter();

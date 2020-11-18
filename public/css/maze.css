@@ -162,3 +162,16 @@
 .node.char {
   background-color: greenyellow;
 }
+
+.maze-cell.no-top-border {
+  border-top: none;
+}
+.maze-cell.no-bottom-border {
+  border-bottom: none;
+}
+.maze-cell.no-left-border {
+  border-left: none;
+}
+.maze-cell.no-right-border {
+  border-right: none;
+}
