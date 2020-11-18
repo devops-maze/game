@@ -1,6 +1,8 @@
 class Node {
-  constructor(id) {
-    this.id = id;
+  constructor(posY, posX) {
+    this.id = `cell_${posY}_${posX}`;
+    this.posY = posY;
+    this.posX = posX;
     this.visited = false;
     this.exits = ["up", "down", "left", "right"];
   }
@@ -21,16 +23,18 @@ class Node {
 }
 
 class Character {
-  constructor(bounds) {
+  constructor() {
     this.posY = 1;
     this.posX = 1;
-    this.bounds = bounds;
-    this.steps = 0;
-    this.directions = ["up", "down", "left", "right"];
     this.position = `cell_1_1`;
+    this.path = [nodeList[0]];
   }
 
   move() {
+    if (this.path.length == 100) {
+      return console.log("Fucked");
+    }
+
     this.devisualize();
     let currentNode = nodeList.find(({ id }) => id === this.position);
     let direction;
@@ -40,37 +44,49 @@ class Character {
     if (currentNode.exits.length === 1) {
       randomMove = currentNode.exits[0];
     } else {
-      randomMove = this.directions[Math.floor(Math.random() * 4)];
+      randomMove = currentNode.exits[Math.floor(Math.random() * currentNode.exits.length)];
     }
-    console.log(randomMove);
 
-    if (currentNode.exits.length > 0) {
-      if (randomMove == "up" && this.posY > 1 && currentNode.exits.includes("up")) {
+    if (currentNode.exits.length === 0) {
+      let i = this.path.length - 1;
+      while (currentNode.exits.length === 0) {
+        this.devisualize();
+        currentNode = this.path[i];
+        i--;
+      }
+      this.position = `${currentNode.id}`;
+      this.posY = currentNode.posY;
+      this.posX = currentNode.posX;
+
+      this.visualize();
+      console.log("Megbassza 🔥 🚒 🔥");
+
+      return;
+    } else if (currentNode.exits.length > 0) {
+      if (randomMove == "up" && currentNode.exits.includes(randomMove)) {
         this.posY--;
         direction = "up";
         nextDirection = "down";
-      } else if (randomMove == "down" && this.posY < this.bounds && currentNode.exits.includes("down")) {
+      } else if (randomMove == "down" && currentNode.exits.includes(randomMove)) {
         this.posY++;
         direction = "down";
         nextDirection = "up";
-      } else if (randomMove == "left" && this.posX > 1 && currentNode.exits.includes("left")) {
+      } else if (randomMove == "left" && currentNode.exits.includes(randomMove)) {
         this.posX--;
         direction = "left";
         nextDirection = "right";
-      } else if (randomMove == "right" && this.posX < this.bounds && currentNode.exits.includes("right")) {
+      } else if (randomMove == "right" && currentNode.exits.includes(randomMove)) {
         this.posX++;
         direction = "right";
         nextDirection = "left";
       }
     }
-
-    currentNode.exits = currentNode.exits.filter((v) => v != direction);
+    currentNode.exits = currentNode.exits.filter((v) => v !== direction);
     this.position = `cell_${this.posY}_${this.posX}`;
 
     let nextNode = nodeList.find(({ id }) => id === this.position);
-    nextNode.exits = nextNode.exits.filter((v) => v != nextDirection);
+    nextNode.exits = nextNode.exits.filter((v) => v !== nextDirection);
 
-    // TODO: extend this code to enable for backtracking.
     if (nextNode.visited) {
       if (direction === "up") {
         this.posY++;
@@ -82,14 +98,19 @@ class Character {
         this.posX--;
       }
       this.position = `cell_${this.posY}_${this.posX}`;
+
       nextNode = nodeList.find(({ id }) => id === this.position);
       this.visualize();
-      return console.table(nextNode);
+      console.table(nextNode);
+
+      return;
     }
 
     nextNode.visit();
     this.visualize();
-    return console.table(nextNode);
+
+    this.path.push(nextNode);
+    return console.log(this.path);
   }
 
   devisualize() {
@@ -132,7 +153,7 @@ function createBlankMaze(mazeDimensions) {
       cell.classList.add("maze-cell");
       cell.setAttribute("id", `cell_${rowIndex}_${colIndex}`);
 
-      nodeList.push(new Node(`cell_${rowIndex}_${colIndex}`));
+      nodeList.push(new Node(rowIndex, colIndex));
 
       column.appendChild(cell);
       row.appendChild(column);
@@ -141,15 +162,32 @@ function createBlankMaze(mazeDimensions) {
   }
   mazeCanvas.appendChild(maze);
 
-  character = new Character(mazeDimensions);
-  console.log(character);
+  character = new Character();
 
-  for (const elem in nodeList) {
-    if (nodeList.hasOwnProperty(elem)) {
-      const node = nodeList[elem];
-      node.visualize();
+  const createNodes = () => {
+    for (const elem in nodeList) {
+      if (nodeList.hasOwnProperty(elem)) {
+        const node = nodeList[elem];
+        node.visualize();
+
+        if (/cell_1_\d+$/.test(node.id)) {
+          node.exits = node.exits.filter((v) => v !== "up");
+        }
+        if (/cell_10_\d+$/.test(node.id)) {
+          node.exits = node.exits.filter((v) => v !== "down");
+        }
+        if (/cell_\d+_1$/.test(node.id)) {
+          node.exits = node.exits.filter((v) => v !== "left");
+        }
+        if (/cell_\d+_10$/.test(node.id)) {
+          node.exits = node.exits.filter((v) => v !== "right");
+        }
+      }
     }
-  }
+    nodeList[0].visited = true;
+  };
+
+  createNodes();
 
   const visitFirstCell = () => {
     const cell = document.getElementById("cell_1_1");
@@ -157,13 +195,13 @@ function createBlankMaze(mazeDimensions) {
   };
 
   visitFirstCell();
-}
 
-document.body.onkeydown = function (e) {
-  if (e.keyCode == 32) {
-    character.move();
-  }
-};
+  document.body.onkeydown = function (e) {
+    if (e.keyCode == 32) {
+      character.move();
+    }
+  };
+}
 
 function removeMaze() {
   let elem = document.getElementById("maze");
