@@ -1,4 +1,4 @@
-function createNewMaze(mazeDimensions) {
+/*function createNewMaze(mazeDimensions) {
   charPos = "";
   posY = 1;
   posX = 1;
@@ -126,7 +126,7 @@ function placeTarget() {
     scores: []
   },
   { merge: true});
-}*/
+}
 
 let charPos;
 let posY;
@@ -142,9 +142,7 @@ function moveCharacter(e) {
     if (y < 1 || x < 1 || y > mazeDimensions || x > mazeDimensions) {
       return console.log(`Out of bounds! 🔥`);
     } else {
-      return document
-        .getElementById(`cell_${y}_${x}`)
-        .classList.contains("gap");
+      return document.getElementById(`cell_${y}_${x}`).classList.contains("gap");
     }
   };
 
@@ -212,5 +210,49 @@ function updateDoc() {
       });
     }
     writeHighscores();
+  }
+}
+*/
+
+//new maze to firestore
+class Maze {
+  constructor(dimensions, path) {
+    this.dimensions = dimensions;
+    this.path = path;
+  }
+}
+
+const mazeConverter = {
+  toFirestore: function (maze) {
+    return { dimensions: maze.dimensions, path: maze.path };
+  },
+  fromFirestore: function (snapshot, options) {
+    const data = snapshot.data(options);
+    return new maze(data.dimensions, data.path);
+  },
+};
+
+function newMazeToFirestore() {
+  if (user != null) {
+    let newMazeRef = db.collection("maze").doc(user.email);
+    if (maze.dimensions == 5) {
+      newMazeRef.update({
+        easy: firebase.firestore.FieldValue.arrayUnion(maze.path),
+      });
+    } else if (maze.dimensions == 10) {
+      newMazeRef.update({
+        medium: firebase.firestore.FieldValue.arrayUnion(maze.path),
+      });
+    }
+    if (maze.dimensions == 20) {
+      newMazeRef.update({
+        hard: firebase.firestore.FieldValue.arrayUnion(maze.path),
+      });
+    }
+    if (maze.dimensions == 25) {
+      newMazeRef.update({
+        extreme: firebase.firestore.FieldValue.arrayUnion(maze.path),
+      });
+    }
   }
 }
