@@ -16,10 +16,7 @@ function initMaze(dimensions) {
   createBlankMaze(dimensions);
   maze.path = createPath();
   generateMazeWalls(maze.path);
-
-  // traverse();
-  // createGaps(dimensions);
-  // placeCharacter();
-  // placeTarget();
+  placeCharacter();
+  placeTarget();
   // document.onkeydown = moveCharacter;
 }

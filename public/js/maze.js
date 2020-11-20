@@ -7,18 +7,11 @@ class Node {
     this.exits = ["up", "down", "left", "right"];
   }
 
-  visualize() {
-    let div = document.createElement("div");
-    div.classList.add("node");
-
-    let cell = document.getElementById(this.id);
-    cell.appendChild(div);
-  }
-
   visit() {
     this.visited = true;
-    let cell = document.getElementById(this.id);
-    cell.firstElementChild.classList.add("visited");
+  }
+  nodeToPosObj() {
+    return this.id.slice(5).split("_");
   }
 }
 
@@ -28,15 +21,10 @@ class Character {
     this.posX = 1;
     this.position = `cell_1_1`;
     this.backtrack = [nodeList[0]];
-    this.path = [nodeList[0]];
+    this.path = [nodeList[0].id];
   }
 
   move() {
-    if (this.backtrack.length == 100) {
-      return console.log("Fucked");
-    }
-
-    this.devisualize();
     let currentNode = nodeList.find(({ id }) => id === this.position);
     let direction;
     let nextDirection;
@@ -51,16 +39,13 @@ class Character {
     if (currentNode.exits.length === 0) {
       let i = this.backtrack.length - 1;
       while (currentNode.exits.length === 0) {
-        this.devisualize();
         currentNode = this.backtrack[i];
         i--;
       }
       this.position = `${currentNode.id}`;
-      this.posY = currentNode.posY;
-      this.posX = currentNode.posX;
-      this.path.push(currentNode);
-
-      this.visualize();
+      this.posY = currentNode.nodeToPosObj()[0];
+      this.posX = currentNode.nodeToPosObj()[1];
+      this.path.push(`backtrack_${currentNode.id}`);
 
       return;
     } else if (currentNode.exits.length > 0) {
@@ -101,27 +86,15 @@ class Character {
       this.position = `cell_${this.posY}_${this.posX}`;
 
       nextNode = nodeList.find(({ id }) => id === this.position);
-      this.visualize();
 
       return;
     }
 
     nextNode.visit();
-    this.visualize();
 
     this.backtrack.push(nextNode);
-    this.path.push(nextNode);
+    this.path.push(nextNode.id);
     return;
-  }
-
-  devisualize() {
-    let cell = document.getElementById(this.position);
-    cell.firstElementChild.classList.remove("char");
-  }
-
-  visualize() {
-    let cell = document.getElementById(this.position);
-    cell.firstElementChild.classList.add("char");
   }
 }
 
@@ -148,8 +121,14 @@ function createBlankMaze(mazeDimensions) {
 
       if (rowIndex === 1 && colIndex === 1) {
         cell.classList.add("start");
+        let char = div();
+        char.setAttribute("id", "character");
+        cell.appendChild(char);
       } else if (rowIndex === mazeDimensions && colIndex === mazeDimensions) {
         cell.classList.add("finish");
+        let targ = div();
+        targ.setAttribute("id", "target");
+        cell.appendChild(targ);
       }
       cell.classList.add("maze-cell");
       cell.setAttribute("id", `cell_${rowIndex}_${colIndex}`);
@@ -169,8 +148,6 @@ function createBlankMaze(mazeDimensions) {
     for (const elem in nodeList) {
       if (nodeList.hasOwnProperty(elem)) {
         const node = nodeList[elem];
-        node.visualize();
-
         if (/cell_1_\d+$/.test(node.id)) {
           node.exits = node.exits.filter((v) => v !== "up");
         }
@@ -189,46 +166,51 @@ function createBlankMaze(mazeDimensions) {
   };
 
   createNodes();
-
-  const visitFirstCell = () => {
-    const cell = document.getElementById("cell_1_1");
-    cell.firstElementChild.classList.add("visited");
-  };
-
-  visitFirstCell();
 }
 
 function createPath() {
   while (character.backtrack.length < 100) {
     character.move();
   }
-  console.log(character.path);
   return character.path;
 }
 
 function generateMazeWalls(path) {
-  console.log(path);
   for (let i = 0; i < path.length - 1; i++) {
-    const step = path[i];
-    const nextStep = path[i + 1];
-    if (step.posY > nextStep.posY) {
+    let step = path[i];
+    let nextStep = path[i + 1];
+    if (nextStep.slice(0, 10) === "backtrack_" || (nextStep.slice(0, 10) === "backtrack_" && step.slice(0, 10) === "backtrack_")) {
+      continue;
+    } else if (step.slice(0, 10) === "backtrack_") {
+      step = step.slice(10);
+    }
+    if (nodeToPosObj(step)[0] > nodeToPosObj(nextStep)[0]) {
       // moving UP
-      $(`#${step.id}`).addClass("no-top-border");
-      $(`#${nextStep.id}`).addClass("no-bottom-border");
-    } else if (step.posY < nextStep.posY) {
+      $(`#${step}`).addClass("no-top-border");
+      $(`#${nextStep}`).addClass("no-bottom-border");
+    } else if (nodeToPosObj(step)[0] < nodeToPosObj(nextStep)[0]) {
       // moving DOWN
-      $(`#${step.id}`).addClass("no-bottom-border");
-      $(`#${nextStep.id}`).addClass("no-top-border");
-    } else if (step.posX > nextStep.posX) {
+      $(`#${step}`).addClass("no-bottom-border");
+      $(`#${nextStep}`).addClass("no-top-border");
+    } else if (nodeToPosObj(step)[1] > nodeToPosObj(nextStep)[1]) {
       // moving LEFT
-      $(`#${step.id}`).addClass("no-left-border");
-      $(`#${nextStep.id}`).addClass("no-right-border");
-    } else if (step.posX < nextStep.posX) {
+      $(`#${step}`).addClass("no-left-border");
+      $(`#${nextStep}`).addClass("no-right-border");
+    } else if (nodeToPosObj(step)[1] < nodeToPosObj(nextStep)[1]) {
       // moving RIGHT
-      $(`#${step.id}`).addClass("no-right-border");
-      $(`#${nextStep.id}`).addClass("no-left-border");
+      $(`#${step}`).addClass("no-right-border");
+      $(`#${nextStep}`).addClass("no-left-border");
     }
   }
+}
+
+function nodeToPosObj(nodeId) {
+  return nodeId
+    .slice(5)
+    .split("_")
+    .map(function (item) {
+      return parseInt(item, 10);
+    });
 }
 
 function removeMaze() {
@@ -239,52 +221,40 @@ function removeMaze() {
   }
 }
 
-// function createGaps(mazeDimensions) {
-//   for (let colIndex = 1; colIndex <= mazeDimensions - 1; colIndex++) {
-//     let randomGap = Math.floor(Math.random() * mazeDimensions) + 1;
-//     for (let rowIndex = 1; rowIndex <= mazeDimensions; rowIndex++) {
-//       if (randomGap == rowIndex) {
-//         let cell = document.getElementById(`cell_${rowIndex}_${colIndex}`);
-//         cell.classList.add("gap");
-//       }
-//     }
-//   }
-// }
+const storage = firebase.storage();
+const storageRef = storage.ref();
+const imagesRef = storageRef.child("images");
 
-// const storage = firebase.storage();
-// const storageRef = storage.ref();
-// const imagesRef = storageRef.child("images");
+function placeCharacter() {
+  const charImg = imagesRef.child("deno.png");
+  charImg
+    .getDownloadURL()
+    .then(function (url) {
+      const character = document.getElementById("character");
+      const img = document.createElement("img");
+      img.setAttribute("id", "character-image");
+      img.src = url;
+      character.appendChild(img);
+    })
+    .catch(function (error) {
+      console.error(error);
+    });
+}
 
-// function placeCharacter() {
-//   const charImg = imagesRef.child("deno.png");
-//   charImg
-//     .getDownloadURL()
-//     .then(function (url) {
-//       const character = document.getElementById("character");
-//       const img = document.createElement("img");
-//       img.setAttribute("id", "character-image");
-//       img.src = url;
-//       character.appendChild(img);
-//     })
-//     .catch(function (error) {
-//       console.error(error);
-//     });
-// }
-
-// function placeTarget() {
-//   const targImg = imagesRef.child("portal.png");
-//   targImg
-//     .getDownloadURL()
-//     .then(function (url) {
-//       const target = document.getElementById("target");
-//       const img = document.createElement("img");
-//       img.src = url;
-//       target.appendChild(img);
-//     })
-//     .catch(function (error) {
-//       console.error(error);
-//     });
-// }
+function placeTarget() {
+  const targImg = imagesRef.child("portal.png");
+  targImg
+    .getDownloadURL()
+    .then(function (url) {
+      const target = document.getElementById("target");
+      const img = document.createElement("img");
+      img.src = url;
+      target.appendChild(img);
+    })
+    .catch(function (error) {
+      console.error(error);
+    });
+}
 
 // let charPos;
 // let posY;

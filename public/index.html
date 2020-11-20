@@ -41,7 +41,7 @@
         <a class="dropdown-item" onclick="maze.dimensions = 20">Hard</a>
         <a class="dropdown-item" onclick="maze.dimensions = 25">Extreme</a>
       </div>
-      <button id="start" class="btn btn-secondary btn-lg" onclick="initMaze(mazeDimensions.value)">Start Game</button>
+      <button id="start" class="btn btn-secondary btn-lg" onclick="initMaze(maze.dimensions)">Start Game</button>
     </div>
     <div id="maze-container" class="container-fluid">
       <div id="maze-canvas"></div>
