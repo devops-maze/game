@@ -18,4 +18,5 @@
   - a path is made with the algorithm above
   - this path is then passed as an array of strings
   - a function traverses this path and breaks the walls (*removes borders*)
+  - hit the start game button to regenerate the maze and see the ***MAGIC***
   - And this way an actual maze is born ***TA-DAA!***
