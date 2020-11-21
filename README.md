@@ -6,7 +6,8 @@
 
 - [Jakab Ádám](https://github.com/Chadyka) | [Jankelic Iván](https://github.com/yankela1227) | [Hankóczki Döme](https://github.com/hdome)
 
-### [Recursive backtracking algorithm (wiki article)](https://en.wikipedia.org/wiki/Maze_generation_algorithm#Recursive_implementation) in action:
+### [Recursive backtracking algorithm (wiki article)](https://en.wikipedia.org/wiki/Maze_generation_algorithm#Recursive_implementation) in action
+
 - [Testing graph traversal (preview link)](https://devops-project-44881--node-movement-testing-n3szp9sr.web.app/)
   - hit the spacebar to move the yellow **current node**
   - light blue nodes have not yet been visited, dark blues have been visited
