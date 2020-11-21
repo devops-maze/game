@@ -18,11 +18,7 @@ nav {
 nav > div {
   height: 100%;
   width: 100%;
-}
-
-nav h1 {
-  margin-right: 1em;
-  text-align: center;
+  align-items: center;
 }
 
 #login-btn {

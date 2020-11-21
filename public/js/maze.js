@@ -10,23 +10,6 @@ class Node {
   visit() {
     this.visited = true;
   }
-  nodeToPosObj(axis) {
-    if (axis === "y") {
-      return this.id
-        .slice(5)
-        .split("_")
-        .map(function (item) {
-          return parseInt(item, 10);
-        })[0];
-    } else if (axis === "x") {
-      return this.id
-        .slice(5)
-        .split("_")
-        .map(function (item) {
-          return parseInt(item, 10);
-        })[1];
-    }
-  }
 }
 
 class Traveller {
@@ -57,8 +40,8 @@ class Traveller {
         i--;
       }
       this.position = `${currentNode.id}`;
-      this.posY = currentNode.nodeToPosObj("y");
-      this.posX = currentNode.nodeToPosObj("x");
+      this.posY = nodeToPosObj(currentNode.id, "y");
+      this.posX = nodeToPosObj(currentNode.id, "x");
       this.path.push(`backtrack_${currentNode.id}`);
 
       return;
@@ -114,6 +97,7 @@ class Traveller {
 
 let nodeList;
 
+// Initialize maze state, create nodes and generate HTML view of maze
 function createBlankMaze(mazeDimensions) {
   let div = () => document.createElement("div");
   const mazeCanvas = document.getElementById("maze-canvas");
@@ -130,13 +114,34 @@ function createBlankMaze(mazeDimensions) {
   for (let rowIndex = 1; rowIndex <= mazeDimensions; rowIndex++) {
     let row = div();
     row.classList.add("maze-row");
-    row.classList.add("row-10");
+    if (mazeDimensions == 5) {
+      row.classList.add("row-5");
+    } else if (mazeDimensions == 10) {
+      row.classList.add("row-10");
+    } else if (mazeDimensions == 20) {
+      row.classList.add("row-20");
+    } else if (mazeDimensions == 25) {
+      row.classList.add("row-25");
+    } else {
+      console.error(mazeDimensions + " is not a valid maze layout!");
+    }
 
     for (let colIndex = 1; colIndex <= mazeDimensions; colIndex++) {
       let column = div();
-      let cell = div();
 
-      column.classList.add("column-10");
+      if (mazeDimensions == 5) {
+        column.classList.add("column-5");
+      } else if (mazeDimensions == 10) {
+        column.classList.add("column-10");
+      } else if (mazeDimensions == 20) {
+        column.classList.add("column-20");
+      } else if (mazeDimensions == 25) {
+        column.classList.add("column-25");
+      } else {
+        console.error(mazeDimensions + " is not a valid maze layout!");
+      }
+
+      let cell = div();
 
       if (rowIndex === 1 && colIndex === 1) {
         cell.classList.add("start");
@@ -163,41 +168,22 @@ function createBlankMaze(mazeDimensions) {
   mazeCanvas.appendChild(maze);
 
   // Remove moves that lead out of bounds
-  for (const elem in nodeList) {
-    if (nodeList.hasOwnProperty(elem)) {
-      const node = nodeList[elem];
-      if (/cell_1_\d+$/.test(node.id)) {
-        node.exits = node.exits.filter((v) => v !== "up");
-      }
-      if (/cell_10_\d+$/.test(node.id)) {
-        node.exits = node.exits.filter((v) => v !== "down");
-      }
-      if (/cell_\d+_1$/.test(node.id)) {
-        node.exits = node.exits.filter((v) => v !== "left");
-      }
-      if (/cell_\d+_10$/.test(node.id)) {
-        node.exits = node.exits.filter((v) => v !== "right");
-      }
-    }
-  }
-  nodeList[0].visited = true;
+  removeEdgeMoves(mazeDimensions);
 }
 
+// Creates the route through the node objects
 function createPath() {
   const traveller = new Traveller();
-  while (traveller.backtrack.length < 100) {
+  let mazeSize = Math.pow(maze.dimensions, 2);
+  while (traveller.backtrack.length < mazeSize) {
     traveller.move();
   }
   return traveller.path;
 }
 
-async function sleep(msec) {
-  return new Promise((resolve) => setTimeout(resolve, msec));
-}
-
-async function generateMazeWalls(path) {
+// Give this a valid path and generate your maze
+function generateMazeFromPath(path) {
   for (let i = 0; i < path.length - 1; i++) {
-    await sleep(50);
     let step = path[i];
     let nextStep = path[i + 1];
     if (nextStep.slice(0, 10) === "backtrack_" || (nextStep.slice(0, 10) === "backtrack_" && step.slice(0, 10) === "backtrack_")) {
@@ -313,7 +299,7 @@ function moveCharacter(e) {
 }
 
 function checkWinCondition(pos) {
-  if (document.getElementById(pos).classList.contains("finish")) {
+  if ($(`#${pos}`).hasClass("finish")) {
     const character = document.getElementById("character");
     character.parentNode.removeChild(character);
     document.onkeydown = null;
@@ -323,7 +309,7 @@ function checkWinCondition(pos) {
     p.innerHTML = `You took ${steps} steps to complete the map`;
     p.classList.add("row");
     winPopup.appendChild(p);
-    // updateDoc();
+    updateDoc();
   }
 }
 
@@ -336,28 +322,105 @@ document.addEventListener("click", () => {
   }
 });
 
-// const db = firebase.firestore();
+const db = firebase.firestore();
 
-// function updateDoc() {
-//   if (user != null) {
-//     let newHighscoreDocRef = db.collection("highscores").doc(user.email);
-//     if (mazeDimensions.value == 5) {
-//       newHighscoreDocRef.update({
-//         easy: firebase.firestore.FieldValue.arrayUnion(steps),
-//       });
-//     } else if (mazeDimensions.value == 10) {
-//       newHighscoreDocRef.update({
-//         medium: firebase.firestore.FieldValue.arrayUnion(steps),
-//       });
-//     } else if (mazeDimensions.value == 20) {
-//       newHighscoreDocRef.update({
-//         hard: firebase.firestore.FieldValue.arrayUnion(steps),
-//       });
-//     } else {
-//       newHighscoreDocRef.update({
-//         extreme: firebase.firestore.FieldValue.arrayUnion(steps),
-//       });
-//     }
-//     writeHighscores();
-//   }
-// }
+function updateDoc() {
+  if (user != null) {
+    let newHighscoreDocRef = db.collection("highscores").doc(user.email);
+    if (maze.dimensions === 5) {
+      newHighscoreDocRef.update({
+        easy: firebase.firestore.FieldValue.arrayUnion(steps),
+      });
+    } else if (maze.dimensions === 10) {
+      newHighscoreDocRef.update({
+        medium: firebase.firestore.FieldValue.arrayUnion(steps),
+      });
+    } else if (maze.dimensions === 20) {
+      newHighscoreDocRef.update({
+        hard: firebase.firestore.FieldValue.arrayUnion(steps),
+      });
+    } else if (maze.dimensions === 25) {
+      newHighscoreDocRef.update({
+        extreme: firebase.firestore.FieldValue.arrayUnion(steps),
+      });
+    }
+    writeHighscores();
+  }
+}
+
+function removeEdgeMoves(dimensions) {
+  nodeList[0].visited = true;
+  if (dimensions === 5) {
+    for (const elem in nodeList) {
+      if (nodeList.hasOwnProperty(elem)) {
+        const node = nodeList[elem];
+        if (/cell_1_\d$/.test(node.id)) {
+          node.exits = node.exits.filter((v) => v !== "up");
+        }
+        if (/cell_5_\d$/.test(node.id)) {
+          node.exits = node.exits.filter((v) => v !== "down");
+        }
+        if (/cell_\d_1$/.test(node.id)) {
+          node.exits = node.exits.filter((v) => v !== "left");
+        }
+        if (/cell_\d_5$/.test(node.id)) {
+          node.exits = node.exits.filter((v) => v !== "right");
+        }
+      }
+    }
+  } else if (dimensions === 10) {
+    for (const elem in nodeList) {
+      if (nodeList.hasOwnProperty(elem)) {
+        const node = nodeList[elem];
+        if (/cell_1_\d+$/.test(node.id)) {
+          node.exits = node.exits.filter((v) => v !== "up");
+        }
+        if (/cell_10_\d+$/.test(node.id)) {
+          node.exits = node.exits.filter((v) => v !== "down");
+        }
+        if (/cell_\d+_1$/.test(node.id)) {
+          node.exits = node.exits.filter((v) => v !== "left");
+        }
+        if (/cell_\d+_10$/.test(node.id)) {
+          node.exits = node.exits.filter((v) => v !== "right");
+        }
+      }
+    }
+  } else if (dimensions === 20) {
+    for (const elem in nodeList) {
+      if (nodeList.hasOwnProperty(elem)) {
+        const node = nodeList[elem];
+        if (/cell_1_\d+$/.test(node.id)) {
+          node.exits = node.exits.filter((v) => v !== "up");
+        }
+        if (/cell_20_\d+$/.test(node.id)) {
+          node.exits = node.exits.filter((v) => v !== "down");
+        }
+        if (/cell_\d+_1$/.test(node.id)) {
+          node.exits = node.exits.filter((v) => v !== "left");
+        }
+        if (/cell_\d+_20$/.test(node.id)) {
+          node.exits = node.exits.filter((v) => v !== "right");
+        }
+      }
+    }
+  } else if (dimensions === 25) {
+    for (const elem in nodeList) {
+      if (nodeList.hasOwnProperty(elem)) {
+        const node = nodeList[elem];
+        if (/cell_1_\d+$/.test(node.id)) {
+          node.exits = node.exits.filter((v) => v !== "up");
+        }
+        if (/cell_25_\d+$/.test(node.id)) {
+          node.exits = node.exits.filter((v) => v !== "down");
+        }
+        if (/cell_\d+_1$/.test(node.id)) {
+          node.exits = node.exits.filter((v) => v !== "left");
+        }
+        if (/cell_\d+_25$/.test(node.id)) {
+          node.exits = node.exits.filter((v) => v !== "right");
+        }
+      }
+    }
+  }
+}
