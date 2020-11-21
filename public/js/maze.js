@@ -10,12 +10,26 @@ class Node {
   visit() {
     this.visited = true;
   }
-  nodeToPosObj() {
-    return this.id.slice(5).split("_");
+  nodeToPosObj(axis) {
+    if (axis === "y") {
+      return this.id
+        .slice(5)
+        .split("_")
+        .map(function (item) {
+          return parseInt(item, 10);
+        })[0];
+    } else if (axis === "x") {
+      return this.id
+        .slice(5)
+        .split("_")
+        .map(function (item) {
+          return parseInt(item, 10);
+        })[1];
+    }
   }
 }
 
-class Character {
+class Traveller {
   constructor() {
     this.posY = 1;
     this.posX = 1;
@@ -43,8 +57,8 @@ class Character {
         i--;
       }
       this.position = `${currentNode.id}`;
-      this.posY = currentNode.nodeToPosObj()[0];
-      this.posX = currentNode.nodeToPosObj()[1];
+      this.posY = currentNode.nodeToPosObj("y");
+      this.posX = currentNode.nodeToPosObj("x");
       this.path.push(`backtrack_${currentNode.id}`);
 
       return;
@@ -98,12 +112,17 @@ class Character {
   }
 }
 
-let nodeList = [];
-let character;
+let nodeList;
 
 function createBlankMaze(mazeDimensions) {
   let div = () => document.createElement("div");
   const mazeCanvas = document.getElementById("maze-canvas");
+
+  charPos = `cell_1_1`;
+  charPosY = 1;
+  charPosX = 1;
+  steps = 0;
+  nodeList = [];
 
   const maze = div();
   maze.setAttribute("id", "maze");
@@ -133,6 +152,7 @@ function createBlankMaze(mazeDimensions) {
       cell.classList.add("maze-cell");
       cell.setAttribute("id", `cell_${rowIndex}_${colIndex}`);
 
+      // Create nodes and push them into an array
       nodeList.push(new Node(rowIndex, colIndex));
 
       column.appendChild(cell);
@@ -142,41 +162,42 @@ function createBlankMaze(mazeDimensions) {
   }
   mazeCanvas.appendChild(maze);
 
-  character = new Character();
-
-  const createNodes = () => {
-    for (const elem in nodeList) {
-      if (nodeList.hasOwnProperty(elem)) {
-        const node = nodeList[elem];
-        if (/cell_1_\d+$/.test(node.id)) {
-          node.exits = node.exits.filter((v) => v !== "up");
-        }
-        if (/cell_10_\d+$/.test(node.id)) {
-          node.exits = node.exits.filter((v) => v !== "down");
-        }
-        if (/cell_\d+_1$/.test(node.id)) {
-          node.exits = node.exits.filter((v) => v !== "left");
-        }
-        if (/cell_\d+_10$/.test(node.id)) {
-          node.exits = node.exits.filter((v) => v !== "right");
-        }
+  // Remove moves that lead out of bounds
+  for (const elem in nodeList) {
+    if (nodeList.hasOwnProperty(elem)) {
+      const node = nodeList[elem];
+      if (/cell_1_\d+$/.test(node.id)) {
+        node.exits = node.exits.filter((v) => v !== "up");
+      }
+      if (/cell_10_\d+$/.test(node.id)) {
+        node.exits = node.exits.filter((v) => v !== "down");
+      }
+      if (/cell_\d+_1$/.test(node.id)) {
+        node.exits = node.exits.filter((v) => v !== "left");
+      }
+      if (/cell_\d+_10$/.test(node.id)) {
+        node.exits = node.exits.filter((v) => v !== "right");
       }
     }
-    nodeList[0].visited = true;
-  };
-
-  createNodes();
+  }
+  nodeList[0].visited = true;
 }
 
 function createPath() {
-  while (character.backtrack.length < 100) {
-    character.move();
+  const traveller = new Traveller();
+  while (traveller.backtrack.length < 100) {
+    traveller.move();
   }
-  return character.path;
+  return traveller.path;
 }
 
-function generateMazeWalls(path) {
+async function sleep(msec) {
+  return new Promise((resolve) => setTimeout(resolve, msec));
+}
+
+async function generateMazeWalls(path) {
   for (let i = 0; i < path.length - 1; i++) {
+    await sleep(50);
     let step = path[i];
     let nextStep = path[i + 1];
     if (nextStep.slice(0, 10) === "backtrack_" || (nextStep.slice(0, 10) === "backtrack_" && step.slice(0, 10) === "backtrack_")) {
@@ -184,19 +205,19 @@ function generateMazeWalls(path) {
     } else if (step.slice(0, 10) === "backtrack_") {
       step = step.slice(10);
     }
-    if (nodeToPosObj(step)[0] > nodeToPosObj(nextStep)[0]) {
+    if (nodeToPosObj(step, "y") > nodeToPosObj(nextStep, "y")) {
       // moving UP
       $(`#${step}`).addClass("no-top-border");
       $(`#${nextStep}`).addClass("no-bottom-border");
-    } else if (nodeToPosObj(step)[0] < nodeToPosObj(nextStep)[0]) {
+    } else if (nodeToPosObj(step, "y") < nodeToPosObj(nextStep, "y")) {
       // moving DOWN
       $(`#${step}`).addClass("no-bottom-border");
       $(`#${nextStep}`).addClass("no-top-border");
-    } else if (nodeToPosObj(step)[1] > nodeToPosObj(nextStep)[1]) {
+    } else if (nodeToPosObj(step, "x") > nodeToPosObj(nextStep, "x")) {
       // moving LEFT
       $(`#${step}`).addClass("no-left-border");
       $(`#${nextStep}`).addClass("no-right-border");
-    } else if (nodeToPosObj(step)[1] < nodeToPosObj(nextStep)[1]) {
+    } else if (nodeToPosObj(step, "x") < nodeToPosObj(nextStep, "x")) {
       // moving RIGHT
       $(`#${step}`).addClass("no-right-border");
       $(`#${nextStep}`).addClass("no-left-border");
@@ -204,13 +225,22 @@ function generateMazeWalls(path) {
   }
 }
 
-function nodeToPosObj(nodeId) {
-  return nodeId
-    .slice(5)
-    .split("_")
-    .map(function (item) {
-      return parseInt(item, 10);
-    });
+function nodeToPosObj(nodeId, axis) {
+  if (axis === "y") {
+    return nodeId
+      .slice(5)
+      .split("_")
+      .map(function (item) {
+        return parseInt(item, 10);
+      })[0];
+  } else if (axis === "x") {
+    return nodeId
+      .slice(5)
+      .split("_")
+      .map(function (item) {
+        return parseInt(item, 10);
+      })[1];
+  }
 }
 
 function removeMaze() {
@@ -256,66 +286,55 @@ function placeTarget() {
     });
 }
 
-// let charPos;
-// let posY;
-// let posX;
-// let steps;
+let charPos = `cell_1_1`;
+let charPosY = 1;
+let charPosX = 1;
+let steps = 0;
 
-// function moveCharacter(e) {
-//   e = e || window.event;
-//   const character = document.getElementById("character");
-//   let mazeDimensions = document.getElementById("maze").children.length;
+function moveCharacter(e) {
+  e = e || window.event;
+  const character = document.getElementById("character");
 
-//   const isGap = (y, x) => {
-//     if (y < 1 || x < 1 || y > mazeDimensions || x > mazeDimensions) {
-//       return console.log(`Out of bounds! 🔥`);
-//     } else {
-//       return document
-//         .getElementById(`cell_${y}_${x}`)
-//         .classList.contains("gap");
-//     }
-//   };
+  if (e.keyCode == "38" && charPosY > 1 && $(`#${charPos}`).hasClass("no-top-border")) {
+    charPosY--;
+  } else if (e.keyCode == "40" && charPosY < maze.dimensions && $(`#${charPos}`).hasClass("no-bottom-border")) {
+    charPosY++;
+  } else if (e.keyCode == "37" && charPosX > 1 && $(`#${charPos}`).hasClass("no-left-border")) {
+    charPosX--;
+  } else if (e.keyCode == "39" && charPosX < maze.dimensions && $(`#${charPos}`).hasClass("no-right-border")) {
+    charPosX++;
+  }
+  steps++;
+  charPos = `cell_${charPosY}_${charPosX}`;
 
-//   if (e.keyCode == "38" && posY > 1) {
-//     posY--;
-//   } else if (e.keyCode == "40" && posY < mazeDimensions) {
-//     posY++;
-//   } else if (e.keyCode == "37" && posX > 1 && isGap(posY, posX - 1)) {
-//     posX--;
-//   } else if (e.keyCode == "39" && posX < mazeDimensions && isGap(posY, posX)) {
-//     posX++;
-//   }
-//   steps++;
-//   charPos = `cell_${posY}_${posX}`;
+  character.parentNode.removeChild(character);
+  document.getElementById(charPos).appendChild(character);
+  checkWinCondition(charPos);
+}
 
-//   character.parentNode.removeChild(character);
-//   document.getElementById(charPos).appendChild(character);
-//   checkWinCondition(charPos);
-// }
+function checkWinCondition(pos) {
+  if (document.getElementById(pos).classList.contains("finish")) {
+    const character = document.getElementById("character");
+    character.parentNode.removeChild(character);
+    document.onkeydown = null;
+    const winPopup = document.getElementById("win-popup");
+    winPopup.style.display = "flex";
+    const p = document.createElement("p");
+    p.innerHTML = `You took ${steps} steps to complete the map`;
+    p.classList.add("row");
+    winPopup.appendChild(p);
+    // updateDoc();
+  }
+}
 
-// function checkWinCondition(pos) {
-//   if (document.getElementById(pos).classList.contains("finish")) {
-//     const character = document.getElementById("character");
-//     character.parentNode.removeChild(character);
-//     document.onkeydown = null;
-//     const winPopup = document.getElementById("win-popup");
-//     winPopup.style.display = "flex";
-//     const p = document.createElement("p");
-//     p.innerHTML = `You took ${steps} steps to complete the map`;
-//     p.classList.add("row");
-//     winPopup.appendChild(p);
-//     updateDoc();
-//   }
-// }
-
-// document.addEventListener("click", () => {
-//   const winPopup = document.getElementById("win-popup");
-//   winPopup.style.display = "none";
-//   const p = document.querySelector("#win-popup p");
-//   if (p != null) {
-//     winPopup.removeChild(p);
-//   }
-// });
+document.addEventListener("click", () => {
+  const winPopup = document.getElementById("win-popup");
+  winPopup.style.display = "none";
+  const p = document.querySelector("#win-popup p");
+  if (p != null) {
+    winPopup.removeChild(p);
+  }
+});
 
 // const db = firebase.firestore();
 

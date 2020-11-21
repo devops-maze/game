@@ -18,5 +18,5 @@ function initMaze(dimensions) {
   generateMazeWalls(maze.path);
   placeCharacter();
   placeTarget();
-  // document.onkeydown = moveCharacter;
+  document.onkeydown = moveCharacter;
 }
