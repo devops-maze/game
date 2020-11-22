@@ -18,11 +18,7 @@ nav {
 nav > div {
   height: 100%;
   width: 100%;
-}
-
-nav h1 {
-  margin-right: 1em;
-  text-align: center;
+  align-items: center;
 }
 
 #login-btn {
@@ -122,7 +118,7 @@ nav h1 {
 
 .help {
   position: absolute;
-  margin: 2.5em 6em;
+  margin: 2.5em 8em;
 }
 
 #tooltip {
@@ -135,4 +131,14 @@ nav h1 {
   color: white;
   background-color: black;
   border-color: black;
+}
+
+.tooltip-box {
+  margin: 0 0;
+}
+
+.tooltip-inner {
+  padding: 1em;
+  min-width: 25vw;
+  height: auto;
 }
