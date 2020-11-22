@@ -75,11 +75,11 @@ function writeHighscores() {
 }
 
 /* opens the profile button */
-let profiledb = document.getElementById("profile-dropdown");
+let profileDd = $("#profile-dropdown");
 function profileOnClick() {
-  if (profiledb.style.display == "none") {
-    profiledb.style.display = "block";
-  } else if ((profiledb.style.display = "block")) {
-    profiledb.style.display = "none";
+  if (profileDd.css("display") == "none") {
+    profileDd.css("display", "block");
+  } else if (profileDd.css("display") == "block") {
+    profileDd.css("display", "none");
   }
 }

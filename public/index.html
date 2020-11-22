@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Maze game</title>
@@ -13,83 +12,68 @@
     <script src="/__/firebase/8.0.0/firebase-storage.js"></script>
     <!-- initialize the SDK after all desired features are loaded -->
     <script src="/__/firebase/init.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
-        integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous" />
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"
-        integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s"
-        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous" />
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet" />
     <link rel="stylesheet" href="css/main.css" />
     <link rel="stylesheet" href="css/maze.css" />
-</head>
+  </head>
 
-<body>
+  <body>
     <nav class="container-fluid row">
-        <div class="col-8 row">
-            <h1>Maze game</h1>
-        </div>
+      <div class="col-8 row">
+        <h1>Maze game</h1>
+      </div>
 
-        <div class="col-4 row justify-content-end align-items-center">
-            <button id="login-btn" class="btn btn-primary btn-lg" onclick="googleLogin()">
-                Login
-            </button>
-            <button id="profile-btn" onclick="profileOnClick()" class="dropbtn"></button>
-        </div>
+      <div class="col-4 row justify-content-end align-items-center">
+        <button id="login-btn" class="btn btn-primary btn-lg" onclick="googleLogin()">Login</button>
+        <button id="profile-btn" onclick="profileOnClick()" class="dropbtn"></button>
+      </div>
     </nav>
     <div id="controls" class="container-fluid row justify-content-center">
-        <button class="btn btn-dark btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true"
-            aria-expanded="false">
-            Difficulty
-        </button>
-        <div class="dropdown-menu">
-            <a class="dropdown-item" onclick="mazeDimensions.setValue(5)">Easy</a>
-            <a class="dropdown-item" onclick="mazeDimensions.setValue(10)">Medium</a>
-            <a class="dropdown-item" onclick="mazeDimensions.setValue(20)">Hard</a>
-            <a class="dropdown-item" onclick="mazeDimensions.setValue(25)">Extreme</a>
-        </div>
-        <button id="start" class="btn btn-secondary btn-lg"  onclick="newMazeToFirestore()">
-            Start Game
-        </button>
+      <button id="difficulty" class="btn btn-dark btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Difficulty</button>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" onclick="setDifficulty('easy')">Easy</a>
+        <a class="dropdown-item" onclick="setDifficulty('medium')">Medium</a>
+        <a class="dropdown-item" onclick="setDifficulty('hard')">Hard</a>
+        <a class="dropdown-item" onclick="setDifficulty('extreme')">Extreme</a>
+      </div>
+      <button id="start" class="btn btn-secondary btn-lg" onclick="initMaze(maze.dimensions)">Start Game</button>
     </div>
     <div id="maze-container" class="container-fluid">
-        <div id="maze-canvas"></div>
+      <div id="maze-canvas"></div>
     </div>
     <div id="win-popup">
-        <h1 class="row">&#127881; You won! &#127881;</h1>
+      <h1 class="row">&#127881; You won! &#127881;</h1>
     </div>
 
     <div id="profile-dropdown" class="profile-dropdown-content">
-        <div id="highscores">
-            <div class="row" id="easy">
-                <h3 id="highscore-title">&#127853; Easy :</h3>
-                <p id="highscore-number"></p>
-            </div>
-            <div class="row" id="medium">
-                <h3 id="highscore-title">&#128585; Medium :</h3>
-                <p id="highscore-number"></p>
-            </div>
-            <div class="row" id="hard">
-                <h3 id="highscore-title">&#129409; Hard :</h3>
-                <p id="highscore-number"></p>
-            </div>
-            <div class="row" id="extreme">
-                <h3 id="highscore-title">&#128121; Extreme :</h3>
-                <p id="highscore-number"></p>
-            </div>
+      <div id="highscores">
+        <div class="row" id="easy">
+          <h3 id="highscore-title">&#127853; Easy :</h3>
+          <p id="highscore-number"></p>
         </div>
-        <div class="row" id="logout-btn" onclick="logout()">
-            <button class="btn btn-danger btn-lg">Logout</button>
+        <div class="row" id="medium">
+          <h3 id="highscore-title">&#128585; Medium :</h3>
+          <p id="highscore-number"></p>
         </div>
+        <div class="row" id="hard">
+          <h3 id="highscore-title">&#129409; Hard :</h3>
+          <p id="highscore-number"></p>
+        </div>
+        <div class="row" id="extreme">
+          <h3 id="highscore-title">&#128121; Extreme :</h3>
+          <p id="highscore-number"></p>
+        </div>
+      </div>
+      <div class="row" id="logout-btn" onclick="logout()">
+        <button class="btn btn-danger btn-lg">Logout</button>
+      </div>
     </div>
     <script src="js/maze.js"></script>
     <script src="js/user.js"></script>
     <script src="js/app.js"></script>
-</body>
-
+  </body>
 </html>
