@@ -18,3 +18,6 @@ function initMaze(dimensions) {
   document.onkeydown = moveCharacter;
 }
 
+function tooltip() {
+  $("#tooltip").tooltip("show");
+}

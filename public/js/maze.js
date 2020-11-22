@@ -142,9 +142,7 @@ function moveCharacter(e) {
     if (y < 1 || x < 1 || y > mazeDimensions || x > mazeDimensions) {
       return console.log(`Out of bounds! 🔥`);
     } else {
-      return document
-        .getElementById(`cell_${y}_${x}`)
-        .classList.contains("gap");
+      return document.getElementById(`cell_${y}_${x}`).classList.contains("gap");
     }
   };
 

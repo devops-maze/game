@@ -6,12 +6,7 @@
 
 body {
   background: rgb(131, 58, 180);
-  background: linear-gradient(
-    90deg,
-    rgba(131, 58, 180, 1) 0%,
-    rgba(253, 29, 29, 1) 50%,
-    rgba(252, 176, 69, 1) 100%
-  );
+  background: linear-gradient(90deg, rgba(131, 58, 180, 1) 0%, rgba(253, 29, 29, 1) 50%, rgba(252, 176, 69, 1) 100%);
 }
 
 nav {
@@ -123,4 +118,21 @@ nav h1 {
 #logout-btn > button {
   width: 100%;
   padding: 0.2em 0;
+}
+
+.help {
+  position: absolute;
+  margin: 2.5em 6em;
+}
+
+#tooltip {
+  width: 50px;
+  height: 50px;
+  padding: 10px 16px;
+  font-size: 22px;
+  line-height: 1.33;
+  border-radius: 35px;
+  color: white;
+  background-color: black;
+  border-color: black;
 }

@@ -16,5 +16,8 @@
     "url": "https://github.com/devops-maze/game/issues"
   },
   "homepage": "https://github.com/devops-maze/game#readme",
-  "dependencies": {}
+  "dependencies": {},
+  "devDependencies": {
+    "prettier": "2.1.2"
+  }
 }
