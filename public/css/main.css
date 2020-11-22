@@ -6,12 +6,7 @@
 
 body {
   background: rgb(131, 58, 180);
-  background: linear-gradient(
-    90deg,
-    rgba(131, 58, 180, 1) 0%,
-    rgba(253, 29, 29, 1) 50%,
-    rgba(252, 176, 69, 1) 100%
-  );
+  background: linear-gradient(90deg, rgba(131, 58, 180, 1) 0%, rgba(253, 29, 29, 1) 50%, rgba(252, 176, 69, 1) 100%);
 }
 
 nav {
@@ -23,11 +18,7 @@ nav {
 nav > div {
   height: 100%;
   width: 100%;
-}
-
-nav h1 {
-  margin-right: 1em;
-  text-align: center;
+  align-items: center;
 }
 
 #login-btn {
