@@ -133,10 +133,6 @@ nav > div {
   border-color: black;
 }
 
-.tooltip-box {
-  margin: 0 0;
-}
-
 .tooltip-inner {
   padding: 1em;
   min-width: 25vw;
