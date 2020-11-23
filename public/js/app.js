@@ -28,6 +28,10 @@ function initMaze(dimensions) {
   document.onkeydown = moveCharacter;
 }
 
+function tooltip() {
+  $("#tooltip").tooltip("show");
+}
+
 function setDifficulty(mode) {
   const btn = $("#difficulty");
   if (mode === "easy") {
