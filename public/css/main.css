@@ -115,3 +115,26 @@ nav > div {
   width: 100%;
   padding: 0.2em 0;
 }
+
+.help {
+  position: absolute;
+  margin: 2.5em 8em;
+}
+
+#tooltip {
+  width: 50px;
+  height: 50px;
+  padding: 10px 16px;
+  font-size: 22px;
+  line-height: 1.33;
+  border-radius: 35px;
+  color: white;
+  background-color: black;
+  border-color: black;
+}
+
+.tooltip-inner {
+  padding: 1em;
+  min-width: 25vw;
+  height: auto;
+}
