@@ -178,8 +178,10 @@ function writeMatchHistory() {
               mazes.push(new Maze(obj.dimensions, obj.path));
             }
           }
-
-          console.log(mazes);
+          for (let i = 0; i < mazes.length; i++) {
+            const maze = mazes[i];
+            matchHtml(maze, i);
+          }
         } else {
           console.log("No such document!");
         }
@@ -188,60 +190,59 @@ function writeMatchHistory() {
         console.log("Error getting document:", error);
       });
   }
-  const matchHtml = () => {
-    let div = () => document.createElement("div");
-    for (var i = 0; i < mazes.length; i++) {
-      const match = div();
-      match.classList.add("match");
-      const stats = div();
-      stats.classList.add("stats-overlay");
-      const dif = div();
-      dif.classList.add("difficulty");
-      const difIcon = div();
-      difIcon.classList.add("icon");
-      difIcon.innerHTML = "&#128585; :";
-      const pDif = document.createElement("p");
-      if (mazes[i].dimensions == 5) {
-        pDif.innerHTML = "Easy";
-      }
-      if (mazes[i].dimensions == 10) {
-        pDif.innerHTML = "Medium";
-      }
-      if (mazes[i].dimensions == 20) {
-        pDif.innerHTML = "Hard";
-      }
-      if (mazes[i].dimensions == 25) {
-        pDif.innerHTML = "Extreme";
-      }
-      const time = div();
-      time.classList.add("time");
-      const timeIcon = div();
-      timeIcon.classList.add("icon");
-      timeIcon.innerHTML = "&#128338; :";
-      const pTime = document.createElement("p");
-      const score = div();
-      score.classList.add("score");
-      const scoreIcon = div();
-      scoreIcon.classList.add("icon");
-      scoreIcon.innerHTML = "&#127942; :";
-      const pScore = document.createElement("p");
-      const mazeMap = div();
-      mazeMap.setAttribute("id", `maze-map-${i}`);
-      dif.appendChild(difIcon);
-      dif.appendChild(pDif);
-      time.appendChild(timeIcon);
-      time.appendChild(pTime);
-      score.appendChild(scoreIcon);
-      score.appendChild(pScore);
-      stats.appendChild(dif);
-      stats.appendChild(time);
-      stats.appendChild(score);
-      match.appendChild(stats);
-      match.appendChild(mazeMap);
-      document.getElementById("matches").appendChild(match);
-      createBlankMaze(mazes[i].dimensions, `maze-map-${i}`);
-    }
-  };
+}
+function matchHtml(maze, i) {
+  let div = () => document.createElement("div");
 
-  matchHtml();
+  const match = div();
+  match.classList.add("match");
+  const stats = div();
+  stats.classList.add("stats-overlay");
+  const dif = div();
+  dif.classList.add("difficulty");
+  const difIcon = div();
+  difIcon.classList.add("icon");
+  difIcon.innerHTML = "&#128585; :";
+  const pDif = document.createElement("p");
+  if (maze.dimensions == 5) {
+    pDif.innerHTML = "Easy";
+  }
+  if (maze.dimensions == 10) {
+    pDif.innerHTML = "Medium";
+  }
+  if (maze.dimensions == 20) {
+    pDif.innerHTML = "Hard";
+  }
+  if (maze.dimensions == 25) {
+    pDif.innerHTML = "Extreme";
+  }
+  const time = div();
+  time.classList.add("time");
+  const timeIcon = div();
+  timeIcon.classList.add("icon");
+  timeIcon.innerHTML = "&#128338; :";
+  const pTime = document.createElement("p");
+  const score = div();
+  score.classList.add("score");
+  const scoreIcon = div();
+  scoreIcon.classList.add("icon");
+  scoreIcon.innerHTML = "&#127942; :";
+  const pScore = document.createElement("p");
+  const mazeMap = div();
+  mazeMap.classList.add("maze-map");
+  mazeMap.setAttribute("id", `maze-map-${i}`);
+  dif.appendChild(difIcon);
+  dif.appendChild(pDif);
+  time.appendChild(timeIcon);
+  time.appendChild(pTime);
+  score.appendChild(scoreIcon);
+  score.appendChild(pScore);
+  stats.appendChild(dif);
+  stats.appendChild(time);
+  stats.appendChild(score);
+  match.appendChild(stats);
+  match.appendChild(mazeMap);
+  document.getElementById("matches").appendChild(match);
+  createBlankMaze(maze.dimensions, `maze-map-${i}`);
+  generateMazeFromPath(maze.path);
 }

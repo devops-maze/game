@@ -183,6 +183,7 @@ function createPath() {
 
 // Give this a valid path and generate your maze
 function generateMazeFromPath(path) {
+  console.log("fokme");
   for (let i = 0; i < path.length - 1; i++) {
     let step = path[i];
     let nextStep = path[i + 1];
