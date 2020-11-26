@@ -244,5 +244,11 @@ function matchHtml(maze, i) {
   match.appendChild(mazeMap);
   document.getElementById("matches").appendChild(match);
   createBlankMaze(maze.dimensions, `maze-map-${i}`);
-  generateMazeFromPath(maze.path);
+  generateMazeFromPath(maze.path, `#maze-map-${i} `);
+  const btn = document.createElement("button");
+  btn.innerHTML = "Hide";
+  btn.addEventListener("click", function () {
+    stats.style.display = "none";
+  });
+  stats.appendChild(btn);
 }

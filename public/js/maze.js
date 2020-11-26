@@ -182,8 +182,7 @@ function createPath() {
 }
 
 // Give this a valid path and generate your maze
-function generateMazeFromPath(path) {
-  console.log("fokme");
+function generateMazeFromPath(path, query) {
   for (let i = 0; i < path.length - 1; i++) {
     let step = path[i];
     let nextStep = path[i + 1];
@@ -194,20 +193,20 @@ function generateMazeFromPath(path) {
     }
     if (nodeToPosObj(step, "y") > nodeToPosObj(nextStep, "y")) {
       // moving UP
-      $(`#${step}`).addClass("no-top-border");
-      $(`#${nextStep}`).addClass("no-bottom-border");
+      $(`${query}#${step}`).addClass("no-top-border");
+      $(`${query}#${nextStep}`).addClass("no-bottom-border");
     } else if (nodeToPosObj(step, "y") < nodeToPosObj(nextStep, "y")) {
       // moving DOWN
-      $(`#${step}`).addClass("no-bottom-border");
-      $(`#${nextStep}`).addClass("no-top-border");
+      $(`${query}#${step}`).addClass("no-bottom-border");
+      $(`${query}#${nextStep}`).addClass("no-top-border");
     } else if (nodeToPosObj(step, "x") > nodeToPosObj(nextStep, "x")) {
       // moving LEFT
-      $(`#${step}`).addClass("no-left-border");
-      $(`#${nextStep}`).addClass("no-right-border");
+      $(`${query}#${step}`).addClass("no-left-border");
+      $(`${query}#${nextStep}`).addClass("no-right-border");
     } else if (nodeToPosObj(step, "x") < nodeToPosObj(nextStep, "x")) {
       // moving RIGHT
-      $(`#${step}`).addClass("no-right-border");
-      $(`#${nextStep}`).addClass("no-left-border");
+      $(`${query}#${step}`).addClass("no-right-border");
+      $(`${query}#${nextStep}`).addClass("no-left-border");
     }
   }
 }

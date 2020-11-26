@@ -19,7 +19,7 @@ function initMaze(dimensions) {
   // Creates the route through the node objects
   maze.path = createPath();
   // Give this a valid path and generate your maze
-  generateMazeFromPath(maze.path);
+  generateMazeFromPath(maze.path, "");
   // Get image and place it at the start
   placeCharacter();
   // Get image and place it at the end
