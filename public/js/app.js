@@ -3,9 +3,9 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 class Maze {
-  constructor(dimensions) {
+  constructor(dimensions, path) {
     this.dimensions = dimensions;
-    this.path = [];
+    this.path = path;
   }
 }
 
@@ -15,7 +15,7 @@ function initMaze(dimensions) {
   // Remove maze HTMLElements
   removeMaze();
   // Initialize maze state, create nodes and generate HTML view of maze
-  createBlankMaze(dimensions);
+  createBlankMaze(dimensions, "maze-canvas");
   // Creates the route through the node objects
   maze.path = createPath();
   // Give this a valid path and generate your maze

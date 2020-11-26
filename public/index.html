@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Maze game</title>
+
     <!-- update the version number as needed -->
     <script src="/__/firebase/8.0.0/firebase-app.js"></script>
     <!-- include only the Firebase features as you need -->
@@ -32,22 +33,6 @@
         <button id="profile-btn" onclick="profileOnClick()" class="dropbtn"></button>
       </div>
     </nav>
-    <div id="insturction-btn" class="help">
-      <button id="tooltip" onclick="tooltip()" class="btn btn-warning btn-circle btn-xl" type="button" data-toggle="tooltip" data-placement="bottom" data-html="true" 
-      title=" <div class='tooltip-box'>
-      <h1><b>Welcome to our maze game!</b></h1>
-      <div><em>Here are some instructions about the cool features of this project:</em> 
-      <br><br>
-      Let's start with the basic rules. Your goal is simple, just use the arrow-keys to navigate the <u>deno</u> trough the maze to reach the target, 
-      wich is the <u>portal</u>. If you did not find this challenging enough, try different difficulties.
-      <br><br>
-      Feel free to log in with your gmail account. Once you have done it, every one of your personal high scores will be displayed in your profile.
-      <br><br>
-      <b>Try to beat them!</b></div>
-      </div>
-        "> ? 
-      </button>
-    </div>
     <div id="controls" class="container-fluid row justify-content-center">
       <button id="difficulty" class="btn btn-dark btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Difficulty</button>
       <div class="dropdown-menu">
@@ -67,29 +52,208 @@
 
     <div id="profile-dropdown" class="profile-dropdown-content">
       <div id="highscores">
-        <div class="row" id="easy">
-          <h3 id="highscore-title">&#127853; Easy :</h3>
-          <p id="highscore-number"></p>
+        <div id="easy">
+          <h3 id="highscore-title">&#127853; Easy &#127853;</h3>
+          <p id="highscore-number">8 steps</p>
         </div>
-        <div class="row" id="medium">
-          <h3 id="highscore-title">&#128585; Medium :</h3>
-          <p id="highscore-number"></p>
+        <div id="medium">
+          <h3 id="highscore-title">&#128585; Medium &#128585;</h3>
+          <p id="highscore-number">123 steps</p>
         </div>
-        <div class="row" id="hard">
-          <h3 id="highscore-title">&#129409; Hard :</h3>
-          <p id="highscore-number"></p>
+        <div id="hard">
+          <h3 id="highscore-title">&#129409; Hard &#129409;</h3>
+          <p id="highscore-number">324 steps</p>
         </div>
-        <div class="row" id="extreme">
-          <h3 id="highscore-title">&#128121; Extreme :</h3>
-          <p id="highscore-number"></p>
+        <div id="extreme">
+          <h3 id="highscore-title">&#128121; Extreme &#128121;</h3>
+          <p id="highscore-number">634 steps</p>
         </div>
       </div>
-      <div class="row" id="logout-btn" onclick="logout()">
+      <button id="match-history-btn" onclick="showMatchHistory()" class="matchbtn">Match History</button> 
+      <div id="matches">
+        <div id="matches-title">
+          <h1>Match history</h1>
+        </div>
+
+        <div class="match">
+          <div class="stats-overlay">
+            <div class="difficulty">
+              <div class="icon">&#128585; :</div>
+              <p>Medium</p>
+            </div>
+            <div class="time">
+              <div class="icon">&#128338; :</div>
+              <p>1:42 mins</p>
+            </div>
+            <div class="score">
+              <div class="icon">&#127942; :</div>
+              <p>64 steps</p>
+            </div>
+          </div>
+          <div class="maze-map"><img src="placeholder.png" alt="maze" /></div>
+        </div>
+        <div class="match">
+          <div class="stats-overlay">
+            <div class="difficulty">
+              <div class="icon">&#128585; :</div>
+              <p>Medium</p>
+            </div>
+            <div class="time">
+              <div class="icon">&#128338; :</div>
+              <p>1:42 mins</p>
+            </div>
+            <div class="score">
+              <div class="icon">&#127942; :</div>
+              <p>64 steps</p>
+            </div>
+          </div>
+          <div class="maze-map"><img src="placeholder.png" alt="maze" /></div>
+        </div>
+        <div class="match">
+          <div class="stats-overlay">
+            <div class="difficulty">
+              <div class="icon">&#128585; :</div>
+              <p>Medium</p>
+            </div>
+            <div class="time">
+              <div class="icon">&#128338; :</div>
+              <p>1:42 mins</p>
+            </div>
+            <div class="score">
+              <div class="icon">&#127942; :</div>
+              <p>64 steps</p>
+            </div>
+          </div>
+          <div class="maze-map"><img src="placeholder.png" alt="maze" /></div>
+        </div>
+        <div class="match">
+          <div class="stats-overlay">
+            <div class="difficulty">
+              <div class="icon">&#128585; :</div>
+              <p>Medium</p>
+            </div>
+            <div class="time">
+              <div class="icon">&#128338; :</div>
+              <p>1:42 mins</p>
+            </div>
+            <div class="score">
+              <div class="icon">&#127942; :</div>
+              <p>64 steps</p>
+            </div>
+          </div>
+          <div class="maze-map"><img src="placeholder.png" alt="maze" /></div>
+        </div>
+        <div class="match">
+          <div class="stats-overlay">
+            <div class="difficulty">
+              <div class="icon">&#128585; :</div>
+              <p>Medium</p>
+            </div>
+            <div class="time">
+              <div class="icon">&#128338; :</div>
+              <p>1:42 mins</p>
+            </div>
+            <div class="score">
+              <div class="icon">&#127942; :</div>
+              <p>64 steps</p>
+            </div>
+          </div>
+          <div class="maze-map"><img src="placeholder.png" alt="maze" /></div>
+        </div>
+        <div class="match">
+          <div class="stats-overlay">
+            <div class="difficulty">
+              <div class="icon">&#128585; :</div>
+              <p>Medium</p>
+            </div>
+            <div class="time">
+              <div class="icon">&#128338; :</div>
+              <p>1:42 mins</p>
+            </div>
+            <div class="score">
+              <div class="icon">&#127942; :</div>
+              <p>64 steps</p>
+            </div>
+          </div>
+          <div class="maze-map"><img src="placeholder.png" alt="maze" /></div>
+        </div>
+        <div class="match">
+          <div class="stats-overlay">
+            <div class="difficulty">
+              <div class="icon">&#128585; :</div>
+              <p>Medium</p>
+            </div>
+            <div class="time">
+              <div class="icon">&#128338; :</div>
+              <p>1:42 mins</p>
+            </div>
+            <div class="score">
+              <div class="icon">&#127942; :</div>
+              <p>64 steps</p>
+            </div>
+          </div>
+          <div class="maze-map"><img src="placeholder.png" alt="maze" /></div>
+        </div>
+        <div class="match">
+          <div class="stats-overlay">
+            <div class="difficulty">
+              <div class="icon">&#128585; :</div>
+              <p>Medium</p>
+            </div>
+            <div class="time">
+              <div class="icon">&#128338; :</div>
+              <p>1:42 mins</p>
+            </div>
+            <div class="score">
+              <div class="icon">&#127942; :</div>
+              <p>64 steps</p>
+            </div>
+          </div>
+          <div class="maze-map"><img src="placeholder.png" alt="maze" /></div>
+        </div>
+        <div class="match">
+          <div class="stats-overlay">
+            <div class="difficulty">
+              <div class="icon">&#128585; :</div>
+              <p>Medium</p>
+            </div>
+            <div class="time">
+              <div class="icon">&#128338; :</div>
+              <p>1:42 mins</p>
+            </div>
+            <div class="score">
+              <div class="icon">&#127942; :</div>
+              <p>64 steps</p>
+            </div>
+          </div>
+          <div class="maze-map"><img src="placeholder.png" alt="maze" /></div>
+        </div>
+        <div class="match">
+          <div class="stats-overlay">
+            <div class="difficulty">
+              <div class="icon">&#128585; :</div>
+              <p>Medium</p>
+            </div>
+            <div class="time">
+              <div class="icon">&#128338; :</div>
+              <p>1:42 mins</p>
+            </div>
+            <div class="score">
+              <div class="icon">&#127942; :</div>
+              <p>64 steps</p>
+            </div>
+          </div>
+          <div class="maze-map"><img src="placeholder.png" alt="maze" /></div>
+        </div>
+      </div>
+      <!-- <div id="logout-btn" onclick="logout()">
         <button class="btn btn-danger btn-lg">Logout</button>
-      </div>
+      </div> -->
     </div>
+
     <script src="js/maze.js"></script>
     <script src="js/user.js"></script>
     <script src="js/app.js"></script>
   </body>
 </html>
+

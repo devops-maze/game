@@ -98,9 +98,9 @@ class Traveller {
 let nodeList;
 
 // Initialize maze state, create nodes and generate HTML view of maze
-function createBlankMaze(mazeDimensions) {
+function createBlankMaze(mazeDimensions, placeId) {
   let div = () => document.createElement("div");
-  const mazeCanvas = document.getElementById("maze-canvas");
+  const mazeCanvas = document.getElementById(placeId);
 
   charPos = `cell_1_1`;
   charPosY = 1;
