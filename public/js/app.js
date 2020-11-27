@@ -3,9 +3,10 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 class Maze {
-  constructor(dimensions, path) {
+  constructor(dimensions, path, steps) {
     this.dimensions = dimensions;
     this.path = path;
+    this.steps = steps;
   }
 }
 

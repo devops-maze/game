@@ -61,10 +61,20 @@ function writeHighscores() {
           let hardDiv = document.querySelector("#hard p");
           let extremeDiv = document.querySelector("#extreme p");
 
+          let easyDiv2 = document.querySelector("#easy2 p");
+          let mediumDiv2 = document.querySelector("#medium2 p");
+          let hardDiv2 = document.querySelector("#hard2 p");
+          let extremeDiv2 = document.querySelector("#extreme2 p");
+
           easyDiv.innerHTML = `${Math.min(...easy)} steps`;
           mediumDiv.innerHTML = `${Math.min(...medium)} steps`;
           hardDiv.innerHTML = `${Math.min(...hard)} steps`;
           extremeDiv.innerHTML = `${Math.min(...extreme)} steps`;
+
+          easyDiv2.innerHTML = `${Math.min(...easy)} steps`;
+          mediumDiv2.innerHTML = `${Math.min(...medium)} steps`;
+          hardDiv2.innerHTML = `${Math.min(...hard)} steps`;
+          extremeDiv2.innerHTML = `${Math.min(...extreme)} steps`;
         } else {
           console.log("No such document!");
         }
@@ -109,6 +119,15 @@ function updateDoc() {
   }
 }
 
+let matchShow = $("#matches-history");
+function showMatches() {
+  if (matchShow.css("display") == "none") {
+    matchShow.css("display", "flex");
+  } else if (matchShow.css("display") == "flex") {
+    matchShow.css("display", "none");
+  }
+}
+
 let matchHistory = $("#matches");
 function showMatchHistory() {
   if (matchHistory.css("display") == "none") {
@@ -117,6 +136,15 @@ function showMatchHistory() {
     matchHistory.css("display", "none");
   }
 }
+
+document.getElementById("closeButton").addEventListener(
+  "click",
+  function (e) {
+    e.preventDefault();
+    this.parentNode.style.display = "none";
+  },
+  false
+);
 
 // maze to firestore
 const mazeConverter = {
@@ -133,6 +161,7 @@ function newMazeToFirestore() {
         mazes: firebase.firestore.FieldValue.arrayUnion({
           dimensions: maze.dimensions,
           path: maze.path,
+          steps: steps,
         }),
       });
     } else if (maze.dimensions == 10) {
@@ -140,6 +169,7 @@ function newMazeToFirestore() {
         mazes: firebase.firestore.FieldValue.arrayUnion({
           dimensions: maze.dimensions,
           path: maze.path,
+          steps: steps,
         }),
       });
     }
@@ -148,6 +178,7 @@ function newMazeToFirestore() {
         mazes: firebase.firestore.FieldValue.arrayUnion({
           dimensions: maze.dimensions,
           path: maze.path,
+          steps: steps,
         }),
       });
     }
@@ -156,6 +187,7 @@ function newMazeToFirestore() {
         mazes: firebase.firestore.FieldValue.arrayUnion({
           dimensions: maze.dimensions,
           path: maze.path,
+          steps: steps,
         }),
       });
     }
@@ -175,9 +207,10 @@ function writeMatchHistory() {
           for (const maze in mazesArray) {
             if (mazesArray.hasOwnProperty(maze)) {
               const obj = mazesArray[maze];
-              mazes.push(new Maze(obj.dimensions, obj.path));
+              mazes.push(new Maze(obj.dimensions, obj.path, obj.steps));
             }
           }
+          console.log(mazes);
           for (let i = 0; i < mazes.length; i++) {
             const maze = mazes[i];
             matchHtml(maze, i);
@@ -228,6 +261,7 @@ function matchHtml(maze, i) {
   scoreIcon.classList.add("icon");
   scoreIcon.innerHTML = "&#127942; :";
   const pScore = document.createElement("p");
+  pScore.innerHTML = `${maze.steps}`;
   const mazeMap = div();
   mazeMap.classList.add("maze-map");
   mazeMap.setAttribute("id", `maze-map-${i}`);
@@ -245,10 +279,19 @@ function matchHtml(maze, i) {
   document.getElementById("matches").appendChild(match);
   createBlankMaze(maze.dimensions, `maze-map-${i}`);
   generateMazeFromPath(maze.path, `#maze-map-${i} `);
-  const btn = document.createElement("button");
-  btn.innerHTML = "Hide";
-  btn.addEventListener("click", function () {
+  const hidebtn = document.createElement("button");
+  hidebtn.innerHTML = "Hide";
+  hidebtn.addEventListener("click", function () {
     stats.style.display = "none";
+    showbtn.style.display = "flex";
   });
-  stats.appendChild(btn);
+  const showbtn = document.createElement("button");
+  showbtn.innerHTML = "Show stats";
+  showbtn.style.display = "none";
+  showbtn.addEventListener("click", function () {
+    stats.style.display = "flex";
+    showbtn.style.display = "none";
+  });
+  stats.appendChild(hidebtn);
+  mazeMap.appendChild(showbtn);
 }
