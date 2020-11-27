@@ -261,7 +261,7 @@ function matchHtml(maze, i) {
   scoreIcon.classList.add("icon");
   scoreIcon.innerHTML = "&#127942; :";
   const pScore = document.createElement("p");
-  pScore.innerHTML = `${maze.steps}`;
+  pScore.innerHTML = `${maze.steps} steps`;
   const mazeMap = div();
   mazeMap.classList.add("maze-map");
   mazeMap.setAttribute("id", `maze-map-${i}`);
@@ -280,7 +280,7 @@ function matchHtml(maze, i) {
   createBlankMaze(maze.dimensions, `maze-map-${i}`);
   generateMazeFromPath(maze.path, `#maze-map-${i} `);
   const hidebtn = document.createElement("button");
-  hidebtn.innerHTML = "Hide";
+  hidebtn.innerHTML = "Hide stats";
   hidebtn.addEventListener("click", function () {
     stats.style.display = "none";
     showbtn.style.display = "flex";

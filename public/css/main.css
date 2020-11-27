@@ -109,11 +109,15 @@ nav > div {
 }
 
 #highscore-title {
+  display: inline-block;
   font-weight: 800;
   font-size: large;
 }
 
-#highscore-number {
+#profile-dropdown #highscore-number {
+  position: absolute;
+  right: 20px;
+  display: inline-block;
   font-weight: 800;
   font-size: large;
 }
@@ -141,11 +145,36 @@ nav > div {
   padding: 0.2em 0;
 }
 
+.help {
+  position: absolute;
+  margin: 2.5em 8em;
+}
+
+#tooltip {
+  width: 50px;
+  height: 50px;
+  padding: 10px 16px;
+  font-size: 22px;
+  line-height: 1.33;
+  border-radius: 35px;
+  color: white;
+  background-color: black;
+  border-color: black;
+}
+
+.tooltip-inner {
+  padding: 1em;
+  min-width: 25vw;
+  height: auto;
+}
+
 #match-history-btn {
   display: flex;
   position: absolute;
   top: 20%;
-  background-color: transparent;
+  background-color: #343a40;
+  border-color: black;
+  border-radius: 0.3rem;
   padding: 0.5em 2em;
   font-weight: 700;
   font-size: 20px;
