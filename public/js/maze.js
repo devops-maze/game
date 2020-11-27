@@ -306,9 +306,11 @@ function checkWinCondition(pos) {
     const winPopup = document.getElementById("win-popup");
     winPopup.style.display = "flex";
     const p = document.createElement("p");
-    p.innerHTML = `You took ${steps} steps to complete the map`;
     p.classList.add("row");
     winPopup.appendChild(p);
+    pause();
+    p.innerHTML = `You took ${steps} steps and ${formattedTime} time to complete the map`;
+    reset();
     updateDoc();
     newMazeToFirestore();
   }

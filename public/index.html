@@ -58,6 +58,10 @@
         <a class="dropdown-item" onclick="setDifficulty('extreme')">Extreme</a>
       </div>
       <button id="start" class="btn btn-secondary btn-lg" onclick="initMaze(maze.dimensions)">Start Game</button>
+      <div class="circle">
+        <span class="time" id="display">00:00:00</span>
+      </div>
+      <button id="reset" class="buttonReset">Reset</button>
     </div>
     <div id="maze-container" class="container-fluid">
       <div id="maze-canvas"></div>

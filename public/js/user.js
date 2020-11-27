@@ -162,6 +162,7 @@ function newMazeToFirestore() {
           dimensions: maze.dimensions,
           path: maze.path,
           steps: steps,
+          time: formattedTime,
         }),
       });
     } else if (maze.dimensions == 10) {
@@ -170,6 +171,7 @@ function newMazeToFirestore() {
           dimensions: maze.dimensions,
           path: maze.path,
           steps: steps,
+          time: formattedTime,
         }),
       });
     }
@@ -179,6 +181,7 @@ function newMazeToFirestore() {
           dimensions: maze.dimensions,
           path: maze.path,
           steps: steps,
+          time: formattedTime,
         }),
       });
     }
@@ -188,6 +191,7 @@ function newMazeToFirestore() {
           dimensions: maze.dimensions,
           path: maze.path,
           steps: steps,
+          time: formattedTime,
         }),
       });
     }
@@ -207,7 +211,7 @@ function writeMatchHistory() {
           for (const maze in mazesArray) {
             if (mazesArray.hasOwnProperty(maze)) {
               const obj = mazesArray[maze];
-              mazes.push(new Maze(obj.dimensions, obj.path, obj.steps));
+              mazes.push(new Maze(obj.dimensions, obj.path, obj.steps, obj.time));
             }
           }
           console.log(mazes);
@@ -255,6 +259,7 @@ function matchHtml(maze, i) {
   timeIcon.classList.add("icon");
   timeIcon.innerHTML = "&#128338; :";
   const pTime = document.createElement("p");
+  pTime.innerHTML = `${maze.formattedTime}`;
   const score = div();
   score.classList.add("score");
   const scoreIcon = div();
