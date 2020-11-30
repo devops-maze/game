@@ -98,9 +98,9 @@ class Traveller {
 let nodeList;
 
 // Initialize maze state, create nodes and generate HTML view of maze
-function createBlankMaze(mazeDimensions) {
+function createBlankMaze(mazeDimensions, placeId) {
   let div = () => document.createElement("div");
-  const mazeCanvas = document.getElementById("maze-canvas");
+  const mazeCanvas = document.getElementById(placeId);
 
   charPos = `cell_1_1`;
   charPosY = 1;
@@ -182,7 +182,7 @@ function createPath() {
 }
 
 // Give this a valid path and generate your maze
-function generateMazeFromPath(path) {
+function generateMazeFromPath(path, query) {
   for (let i = 0; i < path.length - 1; i++) {
     let step = path[i];
     let nextStep = path[i + 1];
@@ -193,20 +193,20 @@ function generateMazeFromPath(path) {
     }
     if (nodeToPosObj(step, "y") > nodeToPosObj(nextStep, "y")) {
       // moving UP
-      $(`#${step}`).addClass("no-top-border");
-      $(`#${nextStep}`).addClass("no-bottom-border");
+      $(`${query}#${step}`).addClass("no-top-border");
+      $(`${query}#${nextStep}`).addClass("no-bottom-border");
     } else if (nodeToPosObj(step, "y") < nodeToPosObj(nextStep, "y")) {
       // moving DOWN
-      $(`#${step}`).addClass("no-bottom-border");
-      $(`#${nextStep}`).addClass("no-top-border");
+      $(`${query}#${step}`).addClass("no-bottom-border");
+      $(`${query}#${nextStep}`).addClass("no-top-border");
     } else if (nodeToPosObj(step, "x") > nodeToPosObj(nextStep, "x")) {
       // moving LEFT
-      $(`#${step}`).addClass("no-left-border");
-      $(`#${nextStep}`).addClass("no-right-border");
+      $(`${query}#${step}`).addClass("no-left-border");
+      $(`${query}#${nextStep}`).addClass("no-right-border");
     } else if (nodeToPosObj(step, "x") < nodeToPosObj(nextStep, "x")) {
       // moving RIGHT
-      $(`#${step}`).addClass("no-right-border");
-      $(`#${nextStep}`).addClass("no-left-border");
+      $(`${query}#${step}`).addClass("no-right-border");
+      $(`${query}#${nextStep}`).addClass("no-left-border");
     }
   }
 }
@@ -306,10 +306,13 @@ function checkWinCondition(pos) {
     const winPopup = document.getElementById("win-popup");
     winPopup.style.display = "flex";
     const p = document.createElement("p");
-    p.innerHTML = `You took ${steps} steps to complete the map`;
     p.classList.add("row");
     winPopup.appendChild(p);
+    pause();
+    p.innerHTML = `You took ${steps} steps and ${formattedTime} time to complete the map`;
+    reset();
     updateDoc();
+    newMazeToFirestore();
   }
 }
 
@@ -323,30 +326,6 @@ document.addEventListener("click", () => {
 });
 
 const db = firebase.firestore();
-
-function updateDoc() {
-  if (user != null) {
-    let newHighscoreDocRef = db.collection("highscores").doc(user.email);
-    if (maze.dimensions === 5) {
-      newHighscoreDocRef.update({
-        easy: firebase.firestore.FieldValue.arrayUnion(steps),
-      });
-    } else if (maze.dimensions === 10) {
-      newHighscoreDocRef.update({
-        medium: firebase.firestore.FieldValue.arrayUnion(steps),
-      });
-    } else if (maze.dimensions === 20) {
-      newHighscoreDocRef.update({
-        hard: firebase.firestore.FieldValue.arrayUnion(steps),
-      });
-    } else if (maze.dimensions === 25) {
-      newHighscoreDocRef.update({
-        extreme: firebase.firestore.FieldValue.arrayUnion(steps),
-      });
-    }
-    writeHighscores();
-  }
-}
 
 function removeEdgeMoves(dimensions) {
   nodeList[0].visited = true;

@@ -18,6 +18,6 @@
   "homepage": "https://github.com/devops-maze/game#readme",
   "dependencies": {},
   "devDependencies": {
-    "prettier": "^2.1.2"
+    "prettier": "2.1.2"
   }
 }

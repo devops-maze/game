@@ -58,6 +58,10 @@
         <a class="dropdown-item" onclick="setDifficulty('extreme')">Extreme</a>
       </div>
       <button id="start" class="btn btn-secondary btn-lg" onclick="initMaze(maze.dimensions)">Start Game</button>
+      <div class="circle">
+        <span class="time" id="display">00:00:00</span>
+      </div>
+      <button id="reset" class="buttonReset">Reset</button>
     </div>
     <div id="maze-container" class="container-fluid">
       <div id="maze-canvas"></div>
@@ -68,28 +72,53 @@
 
     <div id="profile-dropdown" class="profile-dropdown-content">
       <div id="highscores">
-        <div class="row" id="easy">
+        <div id="easy">
           <h3 id="highscore-title">&#127853; Easy :</h3>
           <p id="highscore-number"></p>
         </div>
-        <div class="row" id="medium">
+        <div id="medium">
           <h3 id="highscore-title">&#128585; Medium :</h3>
           <p id="highscore-number"></p>
         </div>
-        <div class="row" id="hard">
+        <div id="hard">
           <h3 id="highscore-title">&#129409; Hard :</h3>
           <p id="highscore-number"></p>
         </div>
-        <div class="row" id="extreme">
+        <div id="extreme">
           <h3 id="highscore-title">&#128121; Extreme :</h3>
           <p id="highscore-number"></p>
         </div>
       </div>
-      <div class="row" id="logout-btn" onclick="logout()">
+      <button id="transform" onclick="showMatches()" class="transformbtn">Show Match History</button>
+      <div id="logout-btn" onclick="logout()">
         <button class="btn btn-danger btn-lg">Logout</button>
+      </div> 
+    </div>
+      <div id="matches-history">
+        <button id="closeButton">X</button>
+        <div id="highscores">
+          <div id="easy2">
+            <h3 id="highscore-title">&#127853; Easy &#127853;</h3>
+            <p id="highscore-number">8 steps</p>
+          </div>
+          <div id="medium2">
+            <h3 id="highscore-title">&#128585; Medium &#128585;</h3>
+            <p id="highscore-number">123 steps</p>
+          </div>
+          <div id="hard2">
+            <h3 id="highscore-title">&#129409; Hard &#129409;</h3>
+            <p id="highscore-number">324 steps</p>
+          </div>
+          <div id="extreme2">
+            <h3 id="highscore-title">&#128121; Extreme &#128121;</h3>
+            <p id="highscore-number">634 steps</p>
+          </div>
+        </div>
+        <button id="match-history-btn" onclick="showMatchHistory()" class="matchbtn">Match History</button>
+        <div id="matches">
+        </div>
       </div>
     </div>
-
     <script src="js/maze.js"></script>
     <script src="js/user.js"></script>
     <script src="js/app.js"></script>
