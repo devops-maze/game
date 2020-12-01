@@ -1,9 +1,10 @@
-import Node, { nodeToPosObj, removeEdgeMoves, createBlankMaze } from "../public/js/maze";
+const mazeFun = require("../public/js/maze");
+const Node = require("../public/js/maze").Node;
 
 test("should create position numbers", () => {
-  expect(nodeToPosObj("cell_5_8", "y")).toBe(5);
-  expect(nodeToPosObj("cell_10_3", "x")).toBe(3);
-  expect(nodeToPosObj("cell_40_82", "x")).toBe(82);
+  expect(mazeFun.nodeToPosObj("cell_5_8", "y")).toBe(5);
+  expect(mazeFun.nodeToPosObj("cell_10_3", "x")).toBe(3);
+  expect(mazeFun.nodeToPosObj("cell_40_82", "x")).toBe(82);
 });
 
 test("should initialize node", () => {
@@ -18,11 +19,6 @@ test("should initialize node", () => {
   expect(node.exits).toContain("down");
   expect(node.exits).toContain("left");
   expect(node.exits).toContain("right");
-  expect(nodeToPosObj(node.id, "y")).toBe(2);
-  expect(nodeToPosObj(node.id, "x")).toBe(5);
+  expect(mazeFun.nodeToPosObj(node.id, "y")).toBe(2);
+  expect(mazeFun.nodeToPosObj(node.id, "x")).toBe(5);
 });
-
-// test("should remove edge moves from node", () => {
-//   const edgeNode = new Node(1, 10);
-//   removeEdgeMoves(10);
-// });
