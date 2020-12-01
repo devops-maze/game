@@ -1,3 +1,14 @@
+const mazeFun = require("./maze");
+
+class Maze {
+  constructor(dimensions, path, steps, formattedTime) {
+    this.dimensions = dimensions;
+    this.path = path;
+    this.steps = steps;
+    this.formattedTime = formattedTime;
+  }
+}
+
 /* Google Login */
 let user, name, email, photoUrl;
 
@@ -282,8 +293,8 @@ function matchHtml(maze, i) {
   match.appendChild(stats);
   match.appendChild(mazeMap);
   document.getElementById("matches").appendChild(match);
-  createBlankMaze(maze.dimensions, `maze-map-${i}`);
-  generateMazeFromPath(maze.path, `#maze-map-${i} `);
+  mazeFun.createBlankMaze(maze.dimensions, `maze-map-${i}`);
+  mazeFun.generateMazeFromPath(maze.path, `#maze-map-${i} `);
   const hidebtn = document.createElement("button");
   hidebtn.innerHTML = "Hide stats";
   hidebtn.addEventListener("click", function () {
@@ -300,3 +311,12 @@ function matchHtml(maze, i) {
   stats.appendChild(hidebtn);
   mazeMap.appendChild(showbtn);
 }
+
+module.exports = {
+  Maze: Maze,
+  googleLogin,
+  profileOnClick,
+  showMatches,
+  logout,
+  showMatchHistory,
+};

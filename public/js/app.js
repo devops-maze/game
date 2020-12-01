@@ -1,33 +1,29 @@
+const mazeFun = require("./maze");
+const Traveller = require("./maze").Traveller;
+const userFun = require("./user");
+const Maze = require("./user").Maze;
+
 window.addEventListener("DOMContentLoaded", () => {
   initMaze(maze.dimensions);
 });
 
-class Maze {
-  constructor(dimensions, path, steps, formattedTime) {
-    this.dimensions = dimensions;
-    this.path = path;
-    this.steps = steps;
-    this.formattedTime = formattedTime;
-  }
-}
-
-let maze = new Maze(10);
+let maze = new Maze(10, [], 0, "");
 
 function initMaze(dimensions) {
   // Remove maze HTMLElements
-  removeMaze();
+  mazeFun.removeMaze();
   // Initialize maze state, create nodes and generate HTML view of maze
-  createBlankMaze(dimensions, "maze-canvas");
+  let traveller = new Traveller(mazeFun.createBlankMaze(dimensions, "maze-canvas"));
   // Creates the route through the node objects
-  maze.path = createPath();
+  maze.path = mazeFun.createPath(traveller, maze.dimensions);
   // Give this a valid path and generate your maze
-  generateMazeFromPath(maze.path, "");
+  mazeFun.generateMazeFromPath(maze.path, "");
   // Get image and place it at the start
-  placeCharacter();
+  mazeFun.placeCharacter();
   // Get image and place it at the end
-  placeTarget();
+  mazeFun.placeTarget();
   // Listen for arrow keys
-  document.onkeydown = moveCharacter;
+  document.onkeydown = mazeFun.moveCharacter;
 }
 
 function tooltip() {
@@ -53,6 +49,7 @@ function setDifficulty(mode) {
 }
 
 // Convert time to a format of hours, minutes, seconds, and milliseconds
+let formattedTime;
 function timeToString(time) {
   let diffInHrs = time / 3600000;
   let hh = Math.floor(diffInHrs);
@@ -70,7 +67,7 @@ function timeToString(time) {
   let formattedSS = ss.toString().padStart(2, "0");
   let formattedMS = ms.toString().padStart(2, "0");
 
-  const formattedTime = `${formattedMM}:${formattedSS}:${formattedMS}`;
+  formattedTime = `${formattedMM}:${formattedSS}:${formattedMS}`;
   return formattedTime;
 }
 
@@ -109,3 +106,37 @@ const resetButton = document.getElementById("reset");
 
 startButton.addEventListener("click", start);
 resetButton.addEventListener("click", reset);
+
+$("#easy-option").click(function () {
+  setDifficulty("easy");
+});
+$("#medium-option").click(function () {
+  setDifficulty("medium");
+});
+$("#hard-option").click(function () {
+  setDifficulty("hard");
+});
+$("#extreme-option").click(function () {
+  setDifficulty("extreme");
+});
+$("#start").click(function () {
+  initMaze(maze.dimensions);
+});
+$("#login-btn").click(function () {
+  userFun.googleLogin();
+});
+$("#profile-btn").click(function () {
+  userFun.profileOnClick();
+});
+$("#tooltip").click(function () {
+  tooltip();
+});
+$("#transform").click(function () {
+  userFun.showMatches();
+});
+$("#logout-btn").click(function () {
+  userFun.logout();
+});
+$("#match-history-btn").click(function () {
+  userFun.showMatchHistory();
+});

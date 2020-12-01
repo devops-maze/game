@@ -1,4 +1,4 @@
-export default class Node {
+class Node {
   constructor(posY, posX) {
     this.id = `cell_${posY}_${posX}`;
     this.posY = posY;
@@ -13,16 +13,17 @@ export default class Node {
 }
 
 class Traveller {
-  constructor() {
+  constructor(nodeList) {
     this.posY = 1;
     this.posX = 1;
     this.position = `cell_1_1`;
+    this.nodeList = nodeList;
     this.backtrack = [nodeList[0]];
     this.path = [nodeList[0].id];
   }
 
   move() {
-    let currentNode = nodeList.find(({ id }) => id === this.position);
+    let currentNode = this.nodeList.find(({ id }) => id === this.position);
     let direction;
     let nextDirection;
 
@@ -67,7 +68,7 @@ class Traveller {
     currentNode.exits = currentNode.exits.filter((v) => v !== direction);
     this.position = `cell_${this.posY}_${this.posX}`;
 
-    let nextNode = nodeList.find(({ id }) => id === this.position);
+    let nextNode = this.nodeList.find(({ id }) => id === this.position);
     nextNode.exits = nextNode.exits.filter((v) => v !== nextDirection);
 
     if (nextNode.visited) {
@@ -82,7 +83,7 @@ class Traveller {
       }
       this.position = `cell_${this.posY}_${this.posX}`;
 
-      nextNode = nodeList.find(({ id }) => id === this.position);
+      nextNode = this.nodeList.find(({ id }) => id === this.position);
 
       return;
     }
@@ -96,7 +97,7 @@ class Traveller {
 }
 
 // Initialize maze state, create nodes and generate HTML view of maze
-export function createBlankMaze(mazeDimensions, placeId) {
+function createBlankMaze(mazeDimensions, placeId) {
   let div = () => document.createElement("div");
   const mazeCanvas = document.getElementById(placeId);
 
@@ -166,14 +167,13 @@ export function createBlankMaze(mazeDimensions, placeId) {
   mazeCanvas.appendChild(maze);
 
   // Remove moves that lead out of bounds
-  removeEdgeMoves(mazeDimensions);
+  removeEdgeMoves(mazeDimensions, nodeList);
   return nodeList;
 }
 
 // Creates the route through the node objects
-function createPath() {
-  const traveller = new Traveller();
-  let mazeSize = Math.pow(maze.dimensions, 2);
+function createPath(traveller, dimensions) {
+  let mazeSize = Math.pow(dimensions, 2);
   while (traveller.backtrack.length < mazeSize) {
     traveller.move();
   }
@@ -210,7 +210,7 @@ function generateMazeFromPath(path, query) {
   }
 }
 
-export function nodeToPosObj(nodeId, axis) {
+function nodeToPosObj(nodeId, axis) {
   if (axis === "y") {
     return nodeId
       .slice(5)
@@ -326,7 +326,7 @@ document.addEventListener("click", () => {
   }
 });
 
-export function removeEdgeMoves(dimensions) {
+function removeEdgeMoves(dimensions, nodeList) {
   nodeList[0].visited = true;
   if (dimensions === 5) {
     for (const elem in nodeList) {
@@ -402,3 +402,17 @@ export function removeEdgeMoves(dimensions) {
     }
   }
 }
+
+module.exports = {
+  Traveller: Traveller,
+  Node: Node,
+  nodeToPosObj,
+  removeMaze,
+  removeEdgeMoves,
+  createBlankMaze,
+  createPath,
+  generateMazeFromPath,
+  placeCharacter,
+  placeTarget,
+  moveCharacter,
+};
