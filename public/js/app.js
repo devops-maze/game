@@ -53,7 +53,6 @@ function setDifficulty(mode) {
 }
 
 // Convert time to a format of hours, minutes, seconds, and milliseconds
-let formattedTime;
 function timeToString(time) {
   let diffInHrs = time / 3600000;
   let hh = Math.floor(diffInHrs);
@@ -71,7 +70,7 @@ function timeToString(time) {
   let formattedSS = ss.toString().padStart(2, "0");
   let formattedMS = ms.toString().padStart(2, "0");
 
-  formattedTime = `${formattedMM}:${formattedSS}:${formattedMS}`;
+  const formattedTime = `${formattedMM}:${formattedSS}:${formattedMS}`;
   return formattedTime;
 }
 
@@ -105,8 +104,8 @@ function reset() {
   elapsedTime = 0;
 }
 
-let startButton = document.getElementById("start");
-let resetButton = document.getElementById("reset");
+const startButton = document.getElementById("start");
+const resetButton = document.getElementById("reset");
 
 startButton.addEventListener("click", start);
 resetButton.addEventListener("click", reset);

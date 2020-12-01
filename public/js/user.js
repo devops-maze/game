@@ -152,7 +152,7 @@ const mazeConverter = {
     return { dimensions: maze.dimensions, path: maze.path };
   },
 };
-
+const db = firebase.firestore();
 function newMazeToFirestore() {
   if (user != null) {
     let newMazeRef = db.collection("highscores").doc(user.email);

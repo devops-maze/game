@@ -1,4 +1,4 @@
-class Node {
+export default class Node {
   constructor(posY, posX) {
     this.id = `cell_${posY}_${posX}`;
     this.posY = posY;
@@ -95,10 +95,8 @@ class Traveller {
   }
 }
 
-let nodeList;
-
 // Initialize maze state, create nodes and generate HTML view of maze
-function createBlankMaze(mazeDimensions, placeId) {
+export function createBlankMaze(mazeDimensions, placeId) {
   let div = () => document.createElement("div");
   const mazeCanvas = document.getElementById(placeId);
 
@@ -106,7 +104,7 @@ function createBlankMaze(mazeDimensions, placeId) {
   charPosY = 1;
   charPosX = 1;
   steps = 0;
-  nodeList = [];
+  let nodeList = [];
 
   const maze = div();
   maze.setAttribute("id", "maze");
@@ -169,6 +167,7 @@ function createBlankMaze(mazeDimensions, placeId) {
 
   // Remove moves that lead out of bounds
   removeEdgeMoves(mazeDimensions);
+  return nodeList;
 }
 
 // Creates the route through the node objects
@@ -211,7 +210,7 @@ function generateMazeFromPath(path, query) {
   }
 }
 
-function nodeToPosObj(nodeId, axis) {
+export function nodeToPosObj(nodeId, axis) {
   if (axis === "y") {
     return nodeId
       .slice(5)
@@ -237,11 +236,10 @@ function removeMaze() {
   }
 }
 
-const storage = firebase.storage();
-const storageRef = storage.ref();
-const imagesRef = storageRef.child("images");
-
 function placeCharacter() {
+  const storage = firebase.storage();
+  const storageRef = storage.ref();
+  const imagesRef = storageRef.child("images");
   const charImg = imagesRef.child("deno.png");
   charImg
     .getDownloadURL()
@@ -258,6 +256,9 @@ function placeCharacter() {
 }
 
 function placeTarget() {
+  const storage = firebase.storage();
+  const storageRef = storage.ref();
+  const imagesRef = storageRef.child("images");
   const targImg = imagesRef.child("portal.png");
   targImg
     .getDownloadURL()
@@ -325,9 +326,7 @@ document.addEventListener("click", () => {
   }
 });
 
-const db = firebase.firestore();
-
-function removeEdgeMoves(dimensions) {
+export function removeEdgeMoves(dimensions) {
   nodeList[0].visited = true;
   if (dimensions === 5) {
     for (const elem in nodeList) {
