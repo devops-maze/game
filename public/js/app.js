@@ -73,6 +73,7 @@ function checkWinCondition(pos) {
     maze.formattedTime = formattedTime;
     userFun.updateDoc(maze);
     userFun.newMazeToFirestore(maze);
+    startButton.disabled = false;
   }
 }
 
@@ -139,6 +140,7 @@ function start() {
     elapsedTime = Date.now() - startTime;
     print(timeToString(elapsedTime));
   }, 10);
+  $("#start").prop("disabled", true);
 }
 
 function pause() {
@@ -149,6 +151,7 @@ function reset() {
   clearInterval(timerInterval);
   print("00:00:00");
   elapsedTime = 0;
+  //startButton.disabled = false;
 }
 
 const startButton = document.getElementById("start");
