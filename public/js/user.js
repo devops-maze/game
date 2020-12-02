@@ -1,4 +1,5 @@
 const mazeFun = require("./maze");
+const $ = require("jquery");
 
 class Maze {
   constructor(dimensions, path, steps, formattedTime) {
@@ -56,6 +57,7 @@ function logout() {
 }
 
 function writeHighscores() {
+  const db = firebase.firestore();
   if (user != null) {
     const userScoresRef = db.collection("highscores").doc(user.email);
     userScoresRef
@@ -106,24 +108,25 @@ function profileOnClick() {
   }
 }
 
-function updateDoc() {
+function updateDoc(maze) {
+  const db = firebase.firestore();
   if (user != null) {
     let newHighscoreDocRef = db.collection("highscores").doc(user.email);
     if (maze.dimensions === 5) {
       newHighscoreDocRef.update({
-        easy: firebase.firestore.FieldValue.arrayUnion(steps),
+        easy: firebase.firestore.FieldValue.arrayUnion(maze.steps),
       });
     } else if (maze.dimensions === 10) {
       newHighscoreDocRef.update({
-        medium: firebase.firestore.FieldValue.arrayUnion(steps),
+        medium: firebase.firestore.FieldValue.arrayUnion(maze.steps),
       });
     } else if (maze.dimensions === 20) {
       newHighscoreDocRef.update({
-        hard: firebase.firestore.FieldValue.arrayUnion(steps),
+        hard: firebase.firestore.FieldValue.arrayUnion(maze.steps),
       });
     } else if (maze.dimensions === 25) {
       newHighscoreDocRef.update({
-        extreme: firebase.firestore.FieldValue.arrayUnion(steps),
+        extreme: firebase.firestore.FieldValue.arrayUnion(maze.steps),
       });
     }
     writeHighscores();
@@ -148,23 +151,15 @@ function showMatchHistory() {
   }
 }
 
-document.getElementById("closeButton").addEventListener(
-  "click",
-  function (e) {
-    e.preventDefault();
-    this.parentNode.style.display = "none";
-  },
-  false
-);
-
 // maze to firestore
 const mazeConverter = {
   toFirestore: function (maze) {
     return { dimensions: maze.dimensions, path: maze.path };
   },
 };
-const db = firebase.firestore();
-function newMazeToFirestore() {
+
+function newMazeToFirestore(maze) {
+  const db = firebase.firestore();
   if (user != null) {
     let newMazeRef = db.collection("highscores").doc(user.email);
     if (maze.dimensions == 5) {
@@ -172,8 +167,8 @@ function newMazeToFirestore() {
         mazes: firebase.firestore.FieldValue.arrayUnion({
           dimensions: maze.dimensions,
           path: maze.path,
-          steps: steps,
-          time: formattedTime,
+          steps: maze.steps,
+          time: maze.formattedTime,
         }),
       });
     } else if (maze.dimensions == 10) {
@@ -181,8 +176,8 @@ function newMazeToFirestore() {
         mazes: firebase.firestore.FieldValue.arrayUnion({
           dimensions: maze.dimensions,
           path: maze.path,
-          steps: steps,
-          time: formattedTime,
+          steps: maze.steps,
+          time: maze.formattedTime,
         }),
       });
     }
@@ -191,8 +186,8 @@ function newMazeToFirestore() {
         mazes: firebase.firestore.FieldValue.arrayUnion({
           dimensions: maze.dimensions,
           path: maze.path,
-          steps: steps,
-          time: formattedTime,
+          steps: maze.steps,
+          time: maze.formattedTime,
         }),
       });
     }
@@ -201,8 +196,8 @@ function newMazeToFirestore() {
         mazes: firebase.firestore.FieldValue.arrayUnion({
           dimensions: maze.dimensions,
           path: maze.path,
-          steps: steps,
-          time: formattedTime,
+          steps: maze.steps,
+          time: maze.formattedTime,
         }),
       });
     }
@@ -212,6 +207,7 @@ function newMazeToFirestore() {
 //match-history preview
 function writeMatchHistory() {
   let mazes = [];
+  const db = firebase.firestore();
   if (user != null) {
     const userScoresRef = db.collection("highscores").doc(user.email);
     userScoresRef
@@ -225,7 +221,6 @@ function writeMatchHistory() {
               mazes.push(new Maze(obj.dimensions, obj.path, obj.steps, obj.time));
             }
           }
-          console.log(mazes);
           for (let i = 0; i < mazes.length; i++) {
             const maze = mazes[i];
             matchHtml(maze, i);
@@ -319,4 +314,6 @@ module.exports = {
   showMatches,
   logout,
   showMatchHistory,
+  updateDoc,
+  newMazeToFirestore,
 };

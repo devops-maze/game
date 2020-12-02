@@ -1,3 +1,5 @@
+const $ = require("jquery");
+
 class Node {
   constructor(posY, posX) {
     this.id = `cell_${posY}_${posX}`;
@@ -101,10 +103,6 @@ function createBlankMaze(mazeDimensions, placeId) {
   let div = () => document.createElement("div");
   const mazeCanvas = document.getElementById(placeId);
 
-  charPos = `cell_1_1`;
-  charPosY = 1;
-  charPosX = 1;
-  steps = 0;
   let nodeList = [];
 
   const maze = div();
@@ -273,59 +271,6 @@ function placeTarget() {
     });
 }
 
-let charPos = `cell_1_1`;
-let charPosY = 1;
-let charPosX = 1;
-let steps = 0;
-
-function moveCharacter(e) {
-  e = e || window.event;
-  const character = document.getElementById("character");
-
-  if (e.keyCode == "38" && charPosY > 1 && $(`#${charPos}`).hasClass("no-top-border")) {
-    charPosY--;
-  } else if (e.keyCode == "40" && charPosY < maze.dimensions && $(`#${charPos}`).hasClass("no-bottom-border")) {
-    charPosY++;
-  } else if (e.keyCode == "37" && charPosX > 1 && $(`#${charPos}`).hasClass("no-left-border")) {
-    charPosX--;
-  } else if (e.keyCode == "39" && charPosX < maze.dimensions && $(`#${charPos}`).hasClass("no-right-border")) {
-    charPosX++;
-  }
-  steps++;
-  charPos = `cell_${charPosY}_${charPosX}`;
-
-  character.parentNode.removeChild(character);
-  document.getElementById(charPos).appendChild(character);
-  checkWinCondition(charPos);
-}
-
-function checkWinCondition(pos) {
-  if ($(`#${pos}`).hasClass("finish")) {
-    const character = document.getElementById("character");
-    character.parentNode.removeChild(character);
-    document.onkeydown = null;
-    const winPopup = document.getElementById("win-popup");
-    winPopup.style.display = "flex";
-    const p = document.createElement("p");
-    p.classList.add("row");
-    winPopup.appendChild(p);
-    pause();
-    p.innerHTML = `You took ${steps} steps and ${formattedTime} time to complete the map`;
-    reset();
-    updateDoc();
-    newMazeToFirestore();
-  }
-}
-
-document.addEventListener("click", () => {
-  const winPopup = document.getElementById("win-popup");
-  winPopup.style.display = "none";
-  const p = document.querySelector("#win-popup p");
-  if (p != null) {
-    winPopup.removeChild(p);
-  }
-});
-
 function removeEdgeMoves(dimensions, nodeList) {
   nodeList[0].visited = true;
   if (dimensions === 5) {
@@ -414,5 +359,4 @@ module.exports = {
   generateMazeFromPath,
   placeCharacter,
   placeTarget,
-  moveCharacter,
 };
