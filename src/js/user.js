@@ -33,7 +33,7 @@ function googleLogin() {
 
       document.getElementById("login-btn").style.display = "none";
       document.getElementById("profile-btn").style.display = "block";
-
+      document.getElementById("logout-btn").style.display = "block";
       writeHighscores();
       writeMatchHistory();
     })
@@ -47,7 +47,11 @@ function logout() {
     .then(function () {
       document.getElementById("logout-btn").style.display = "none";
       document.getElementById("login-btn").style.display = "block";
-
+      document.getElementById("profile-dropdown").style.display = "none";
+      const myNode = document.getElementById("matches");
+      while (myNode.firstChild) {
+        myNode.removeChild(myNode.lastChild);
+      }
       let image = document.getElementById("profile-image");
       image.parentNode.removeChild(image);
     })
@@ -245,18 +249,22 @@ function matchHtml(maze, i) {
   dif.classList.add("difficulty");
   const difIcon = div();
   difIcon.classList.add("icon");
-  difIcon.innerHTML = "&#128585; :";
+  //difIcon.innerHTML = "&#128585; :";
   const pDif = document.createElement("p");
   if (maze.dimensions == 5) {
+    difIcon.innerHTML = "&#127853; :";
     pDif.innerHTML = "Easy";
   }
   if (maze.dimensions == 10) {
+    difIcon.innerHTML = "&#128585; :";
     pDif.innerHTML = "Medium";
   }
   if (maze.dimensions == 20) {
+    difIcon.innerHTML = "&#129409; :";
     pDif.innerHTML = "Hard";
   }
   if (maze.dimensions == 25) {
+    difIcon.innerHTML = "&#128121; :";
     pDif.innerHTML = "Extreme";
   }
   const time = div();
