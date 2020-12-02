@@ -1,7 +1,7 @@
-const mazeFun = require("../public/js/maze");
-const Node = require("../public/js/maze").Node;
-const Maze = require("../public/js/user").Maze;
-const Traveller = require("../public/js/maze").Traveller;
+const mazeFun = require("../js/maze");
+const Node = require("../js/maze").Node;
+const Maze = require("../js/user").Maze;
+const Traveller = require("../js/maze").Traveller;
 const $ = require("jquery");
 
 test("should create position numbers", () => {

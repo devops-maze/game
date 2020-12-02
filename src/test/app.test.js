@@ -1,6 +1,6 @@
-const mazeFun = require("../public/js/maze");
-const Maze = require("../public/js/user").Maze;
-const Traveller = require("../public/js/maze").Traveller;
+const mazeFun = require("../js/maze");
+const Maze = require("../js/user").Maze;
+const Traveller = require("../js/maze").Traveller;
 
 let maze = new Maze(10, [], 0, "");
 test("should initialize maze object", () => {
