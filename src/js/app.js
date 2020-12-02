@@ -1,3 +1,5 @@
+import "../scss/main.scss";
+import "../scss/maze.scss";
 const mazeFun = require("./maze");
 const Traveller = require("./maze").Traveller;
 const userFun = require("./user");
