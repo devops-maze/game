@@ -141,6 +141,8 @@ function start() {
     elapsedTime = Date.now() - startTime;
     print(timeToString(elapsedTime));
   }, 10);
+  $("#start").prop("disabled", true);
+  $("#reset").prop("disabled", false);
 }
 
 function pause() {
@@ -151,6 +153,9 @@ function reset() {
   clearInterval(timerInterval);
   print("00:00:00");
   elapsedTime = 0;
+
+  $("#start").prop("disabled", false);
+  $("#reset").prop("disabled", true);
 }
 
 const startButton = document.getElementById("start");
