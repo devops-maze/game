@@ -73,6 +73,7 @@ function checkWinCondition(pos) {
     maze.formattedTime = formattedTime;
     userFun.updateDoc(maze);
     userFun.newMazeToFirestore(maze);
+    startButton.disabled = false;
   }
 }
 
