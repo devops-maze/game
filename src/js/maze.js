@@ -1,3 +1,5 @@
+const $ = require("jquery");
+
 class Node {
   constructor(posY, posX) {
     this.id = `cell_${posY}_${posX}`;
@@ -13,16 +15,17 @@ class Node {
 }
 
 class Traveller {
-  constructor() {
+  constructor(nodeList) {
     this.posY = 1;
     this.posX = 1;
     this.position = `cell_1_1`;
+    this.nodeList = nodeList;
     this.backtrack = [nodeList[0]];
     this.path = [nodeList[0].id];
   }
 
   move() {
-    let currentNode = nodeList.find(({ id }) => id === this.position);
+    let currentNode = this.nodeList.find(({ id }) => id === this.position);
     let direction;
     let nextDirection;
 
@@ -67,7 +70,7 @@ class Traveller {
     currentNode.exits = currentNode.exits.filter((v) => v !== direction);
     this.position = `cell_${this.posY}_${this.posX}`;
 
-    let nextNode = nodeList.find(({ id }) => id === this.position);
+    let nextNode = this.nodeList.find(({ id }) => id === this.position);
     nextNode.exits = nextNode.exits.filter((v) => v !== nextDirection);
 
     if (nextNode.visited) {
@@ -82,7 +85,7 @@ class Traveller {
       }
       this.position = `cell_${this.posY}_${this.posX}`;
 
-      nextNode = nodeList.find(({ id }) => id === this.position);
+      nextNode = this.nodeList.find(({ id }) => id === this.position);
 
       return;
     }
@@ -95,18 +98,12 @@ class Traveller {
   }
 }
 
-let nodeList;
-
 // Initialize maze state, create nodes and generate HTML view of maze
 function createBlankMaze(mazeDimensions, placeId) {
   let div = () => document.createElement("div");
   const mazeCanvas = document.getElementById(placeId);
 
-  charPos = `cell_1_1`;
-  charPosY = 1;
-  charPosX = 1;
-  steps = 0;
-  nodeList = [];
+  let nodeList = [];
 
   const maze = div();
   maze.setAttribute("id", "maze");
@@ -168,13 +165,13 @@ function createBlankMaze(mazeDimensions, placeId) {
   mazeCanvas.appendChild(maze);
 
   // Remove moves that lead out of bounds
-  removeEdgeMoves(mazeDimensions);
+  removeEdgeMoves(mazeDimensions, nodeList);
+  return nodeList;
 }
 
 // Creates the route through the node objects
-function createPath() {
-  const traveller = new Traveller();
-  let mazeSize = Math.pow(maze.dimensions, 2);
+function createPath(traveller, dimensions) {
+  let mazeSize = Math.pow(dimensions, 2);
   while (traveller.backtrack.length < mazeSize) {
     traveller.move();
   }
@@ -237,11 +234,10 @@ function removeMaze() {
   }
 }
 
-const storage = firebase.storage();
-const storageRef = storage.ref();
-const imagesRef = storageRef.child("images");
-
 function placeCharacter() {
+  const storage = firebase.storage();
+  const storageRef = storage.ref();
+  const imagesRef = storageRef.child("images");
   const charImg = imagesRef.child("deno.png");
   charImg
     .getDownloadURL()
@@ -258,6 +254,9 @@ function placeCharacter() {
 }
 
 function placeTarget() {
+  const storage = firebase.storage();
+  const storageRef = storage.ref();
+  const imagesRef = storageRef.child("images");
   const targImg = imagesRef.child("portal.png");
   targImg
     .getDownloadURL()
@@ -272,62 +271,7 @@ function placeTarget() {
     });
 }
 
-let charPos = `cell_1_1`;
-let charPosY = 1;
-let charPosX = 1;
-let steps = 0;
-
-function moveCharacter(e) {
-  e = e || window.event;
-  const character = document.getElementById("character");
-
-  if (e.keyCode == "38" && charPosY > 1 && $(`#${charPos}`).hasClass("no-top-border")) {
-    charPosY--;
-  } else if (e.keyCode == "40" && charPosY < maze.dimensions && $(`#${charPos}`).hasClass("no-bottom-border")) {
-    charPosY++;
-  } else if (e.keyCode == "37" && charPosX > 1 && $(`#${charPos}`).hasClass("no-left-border")) {
-    charPosX--;
-  } else if (e.keyCode == "39" && charPosX < maze.dimensions && $(`#${charPos}`).hasClass("no-right-border")) {
-    charPosX++;
-  }
-  steps++;
-  charPos = `cell_${charPosY}_${charPosX}`;
-
-  character.parentNode.removeChild(character);
-  document.getElementById(charPos).appendChild(character);
-  checkWinCondition(charPos);
-}
-
-function checkWinCondition(pos) {
-  if ($(`#${pos}`).hasClass("finish")) {
-    const character = document.getElementById("character");
-    character.parentNode.removeChild(character);
-    document.onkeydown = null;
-    const winPopup = document.getElementById("win-popup");
-    winPopup.style.display = "flex";
-    const p = document.createElement("p");
-    p.classList.add("row");
-    winPopup.appendChild(p);
-    pause();
-    p.innerHTML = `You took ${steps} steps and ${formattedTime} time to complete the map`;
-    reset();
-    updateDoc();
-    newMazeToFirestore();
-  }
-}
-
-document.addEventListener("click", () => {
-  const winPopup = document.getElementById("win-popup");
-  winPopup.style.display = "none";
-  const p = document.querySelector("#win-popup p");
-  if (p != null) {
-    winPopup.removeChild(p);
-  }
-});
-
-const db = firebase.firestore();
-
-function removeEdgeMoves(dimensions) {
+function removeEdgeMoves(dimensions, nodeList) {
   nodeList[0].visited = true;
   if (dimensions === 5) {
     for (const elem in nodeList) {
@@ -403,3 +347,16 @@ function removeEdgeMoves(dimensions) {
     }
   }
 }
+
+module.exports = {
+  Traveller: Traveller,
+  Node: Node,
+  nodeToPosObj,
+  removeMaze,
+  removeEdgeMoves,
+  createBlankMaze,
+  createPath,
+  generateMazeFromPath,
+  placeCharacter,
+  placeTarget,
+};

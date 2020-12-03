@@ -1,3 +1,15 @@
+const mazeFun = require("./maze");
+const $ = require("jquery");
+
+class Maze {
+  constructor(dimensions, path, steps, formattedTime) {
+    this.dimensions = dimensions;
+    this.path = path;
+    this.steps = steps;
+    this.formattedTime = formattedTime;
+  }
+}
+
 /* Google Login */
 let user, name, email, photoUrl;
 
@@ -21,7 +33,7 @@ function googleLogin() {
 
       document.getElementById("login-btn").style.display = "none";
       document.getElementById("profile-btn").style.display = "block";
-
+      document.getElementById("logout-btn").style.display = "block";
       writeHighscores();
       writeMatchHistory();
     })
@@ -35,7 +47,11 @@ function logout() {
     .then(function () {
       document.getElementById("logout-btn").style.display = "none";
       document.getElementById("login-btn").style.display = "block";
-
+      document.getElementById("profile-dropdown").style.display = "none";
+      const myNode = document.getElementById("matches");
+      while (myNode.firstChild) {
+        myNode.removeChild(myNode.lastChild);
+      }
       let image = document.getElementById("profile-image");
       image.parentNode.removeChild(image);
     })
@@ -45,6 +61,7 @@ function logout() {
 }
 
 function writeHighscores() {
+  const db = firebase.firestore();
   if (user != null) {
     const userScoresRef = db.collection("highscores").doc(user.email);
     userScoresRef
@@ -95,24 +112,25 @@ function profileOnClick() {
   }
 }
 
-function updateDoc() {
+function updateDoc(maze) {
+  const db = firebase.firestore();
   if (user != null) {
     let newHighscoreDocRef = db.collection("highscores").doc(user.email);
     if (maze.dimensions === 5) {
       newHighscoreDocRef.update({
-        easy: firebase.firestore.FieldValue.arrayUnion(steps),
+        easy: firebase.firestore.FieldValue.arrayUnion(maze.steps),
       });
     } else if (maze.dimensions === 10) {
       newHighscoreDocRef.update({
-        medium: firebase.firestore.FieldValue.arrayUnion(steps),
+        medium: firebase.firestore.FieldValue.arrayUnion(maze.steps),
       });
     } else if (maze.dimensions === 20) {
       newHighscoreDocRef.update({
-        hard: firebase.firestore.FieldValue.arrayUnion(steps),
+        hard: firebase.firestore.FieldValue.arrayUnion(maze.steps),
       });
     } else if (maze.dimensions === 25) {
       newHighscoreDocRef.update({
-        extreme: firebase.firestore.FieldValue.arrayUnion(steps),
+        extreme: firebase.firestore.FieldValue.arrayUnion(maze.steps),
       });
     }
     writeHighscores();
@@ -137,15 +155,6 @@ function showMatchHistory() {
   }
 }
 
-document.getElementById("closeButton").addEventListener(
-  "click",
-  function (e) {
-    e.preventDefault();
-    this.parentNode.style.display = "none";
-  },
-  false
-);
-
 // maze to firestore
 const mazeConverter = {
   toFirestore: function (maze) {
@@ -153,7 +162,8 @@ const mazeConverter = {
   },
 };
 
-function newMazeToFirestore() {
+function newMazeToFirestore(maze) {
+  const db = firebase.firestore();
   if (user != null) {
     let newMazeRef = db.collection("highscores").doc(user.email);
     if (maze.dimensions == 5) {
@@ -161,8 +171,8 @@ function newMazeToFirestore() {
         mazes: firebase.firestore.FieldValue.arrayUnion({
           dimensions: maze.dimensions,
           path: maze.path,
-          steps: steps,
-          time: formattedTime,
+          steps: maze.steps,
+          time: maze.formattedTime,
         }),
       });
     } else if (maze.dimensions == 10) {
@@ -170,8 +180,8 @@ function newMazeToFirestore() {
         mazes: firebase.firestore.FieldValue.arrayUnion({
           dimensions: maze.dimensions,
           path: maze.path,
-          steps: steps,
-          time: formattedTime,
+          steps: maze.steps,
+          time: maze.formattedTime,
         }),
       });
     }
@@ -180,8 +190,8 @@ function newMazeToFirestore() {
         mazes: firebase.firestore.FieldValue.arrayUnion({
           dimensions: maze.dimensions,
           path: maze.path,
-          steps: steps,
-          time: formattedTime,
+          steps: maze.steps,
+          time: maze.formattedTime,
         }),
       });
     }
@@ -190,8 +200,8 @@ function newMazeToFirestore() {
         mazes: firebase.firestore.FieldValue.arrayUnion({
           dimensions: maze.dimensions,
           path: maze.path,
-          steps: steps,
-          time: formattedTime,
+          steps: maze.steps,
+          time: maze.formattedTime,
         }),
       });
     }
@@ -201,6 +211,7 @@ function newMazeToFirestore() {
 //match-history preview
 function writeMatchHistory() {
   let mazes = [];
+  const db = firebase.firestore();
   if (user != null) {
     const userScoresRef = db.collection("highscores").doc(user.email);
     userScoresRef
@@ -214,7 +225,6 @@ function writeMatchHistory() {
               mazes.push(new Maze(obj.dimensions, obj.path, obj.steps, obj.time));
             }
           }
-          console.log(mazes);
           for (let i = 0; i < mazes.length; i++) {
             const maze = mazes[i];
             matchHtml(maze, i);
@@ -239,18 +249,22 @@ function matchHtml(maze, i) {
   dif.classList.add("difficulty");
   const difIcon = div();
   difIcon.classList.add("icon");
-  difIcon.innerHTML = "&#128585; :";
+  //difIcon.innerHTML = "&#128585; :";
   const pDif = document.createElement("p");
   if (maze.dimensions == 5) {
+    difIcon.innerHTML = "&#127853; :";
     pDif.innerHTML = "Easy";
   }
   if (maze.dimensions == 10) {
+    difIcon.innerHTML = "&#128585; :";
     pDif.innerHTML = "Medium";
   }
   if (maze.dimensions == 20) {
+    difIcon.innerHTML = "&#129409; :";
     pDif.innerHTML = "Hard";
   }
   if (maze.dimensions == 25) {
+    difIcon.innerHTML = "&#128121; :";
     pDif.innerHTML = "Extreme";
   }
   const time = div();
@@ -282,8 +296,8 @@ function matchHtml(maze, i) {
   match.appendChild(stats);
   match.appendChild(mazeMap);
   document.getElementById("matches").appendChild(match);
-  createBlankMaze(maze.dimensions, `maze-map-${i}`);
-  generateMazeFromPath(maze.path, `#maze-map-${i} `);
+  mazeFun.createBlankMaze(maze.dimensions, `maze-map-${i}`);
+  mazeFun.generateMazeFromPath(maze.path, `#maze-map-${i} `);
   const hidebtn = document.createElement("button");
   hidebtn.innerHTML = "Hide stats";
   hidebtn.addEventListener("click", function () {
@@ -300,3 +314,14 @@ function matchHtml(maze, i) {
   stats.appendChild(hidebtn);
   mazeMap.appendChild(showbtn);
 }
+
+module.exports = {
+  Maze: Maze,
+  googleLogin,
+  profileOnClick,
+  showMatches,
+  logout,
+  showMatchHistory,
+  updateDoc,
+  newMazeToFirestore,
+};
