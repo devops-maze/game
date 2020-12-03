@@ -33,8 +33,6 @@ function initMaze(dimensions) {
   mazeFun.placeCharacter();
   // Get image and place it at the end
   mazeFun.placeTarget();
-  // Listen for arrow keys
-  document.onkeydown = moveCharacter;
 }
 
 function moveCharacter(e) {
@@ -143,6 +141,7 @@ function start() {
   }, 10);
   $("#start").prop("disabled", true);
   $("#reset").prop("disabled", false);
+  document.onkeydown = moveCharacter;
 }
 
 function pause() {
@@ -156,6 +155,7 @@ function reset() {
 
   $("#start").prop("disabled", false);
   $("#reset").prop("disabled", true);
+  document.onkeydown = null;
 }
 
 const startButton = document.getElementById("start");
